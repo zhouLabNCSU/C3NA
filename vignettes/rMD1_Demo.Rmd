@@ -21,7 +21,7 @@ library(DT)
 library(phyloseq)
 ```
 
-**NOTE: For better display of the taxa names and data parsing, we HIGHLY recommended the input tax_table() from the phyloseq object should not have any characters/symbols/spaces in front of the taxa names. For example, some reference database might have taxonomic level indicator in front of the taxa name, e.g. {g}__Bacteroides should be just Bacteroides under the Genus column. Please use gsub() or other text replacer to remove these characters. In addition, place make sure the column names for the taxonomic levels include Phylum, Class, Order, Family, Genus and Species. **
+**NOTE:** For better display of the taxa names and data parsing, we HIGHLY recommended the input tax_table() from the phyloseq object should not have any characters/symbols/spaces in front of the taxa names. For example, some reference database might have taxonomic level indicator in front of the taxa name, e.g. {g}__Bacteroides should be just Bacteroides under the Genus column. Please use gsub() or other text replacer to remove these characters. In addition, place make sure the column names for the taxonomic levels include Phylum, Class, Order, Family, Genus and Species. 
 
 ### General Note
 For both Shiny applications, each sub-section has a question mark in the title which the user can click to get a description for the section:
@@ -34,7 +34,7 @@ The demo file includes part of the 16S rRNA processed data from Baxter et al., w
 ```{r}
 # Loading the default 
 data("CRC_Phyloseq")
-CRC_Phyloseq
+CRC_Phyloseq = validatePhloseq(CRC_Phyloseq)
 ```
 
 ### Step 2. Initiate C3NA 
@@ -50,6 +50,9 @@ DT::datatable(as.matrix(phyloseq::tax_table(Normal)))
 
 The initiateC3NA() step involved with sparCC with bootstrap which is a computationally expensive procedure, especially for a recommended 1,000 iterations. The computation time can be as long as 6 days. For initial testing, please consider run at least 25 - 100 iterations which can be done under a few hours. Please check the Supplementary Results from our peper for more details on the stability of using lower number of iterations. 
 ```{r, eval = FALSE}
+library(phyloseq) 
+## This package loading is essential for avoiding a missing function error for taxa_are_rows
+## Which is a deprecated function that cannot be loaded internally. 
 Cancer_C3NA = initiateC3NA(phyloseqObj = Cancer, prevTrh = 0.1,
                            nCPUs = 12, nBootstrap = 1000,
                            nMinTotalCount = 1000, phenotype = "Normal",
@@ -107,6 +110,7 @@ CancerVsNormal_C3NA = getInfluentialTaxa(CancerVsNormal_C3NA)
 ```
 
 ### Step 6. Adding Differential Abundance Resutls
+Please Visit the Differenital Abundance Guide under **Articles** for full tutorials on how to conduct DA analysis and transfer results to C3NA results. 
 ```{r}
 ## Extract the Pre-calculated DA Analysis
 githubURL <- ("https://github.com/zhouLabNCSU/C3NA_ScriptsAndData/raw/main/RPackageTutorialData/Post-initiateC3NA/DA_CancerVsNormal_DADA2_Results.rds")

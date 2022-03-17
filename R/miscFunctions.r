@@ -56,12 +56,11 @@ C3NAPackageCheck <- function() {
   ## CRAN Repo
   .cran_packages <- c("stringr", "tibble", "dplyr", "readr", "stats", "visNetwork", 
                       "igraph", "scales", "magrittr", "tidyr", "randomcoloR", 
-                      "ggpubr", "ggplot2", "qvalue", "plotly", "colorspace", 
-                      "reshape2", "metagMisc", 
-                      "shiny", "shinyWidgets", "shinydashboard", 
+                      "ggpubr", "ggplot2",  "plotly", "colorspace", 
+                      "reshape2", "shiny", "shinyWidgets", "shinydashboard", 
                       "shinyjs", "reactable", "DT", "pheatmap", "dynamicTreeCut", 
                       "cluster", "WGCNA", "RColorBrewer", "base64enc", "htmlwidgets",
-                      "impute", "foreach")
+                       "foreach")
   packageResults = suppressWarnings(suppressMessages(as.data.frame(sapply(.cran_packages, require, character.only = TRUE))))
   colnames(packageResults) = "Found"
   packageResults$Library = "CRAN"
@@ -74,7 +73,7 @@ C3NAPackageCheck <- function() {
   }
   
   ## Bioconductor Repo
-  .bioc_packages <- c("phyloseq")
+  .bioc_packages <- c("phyloseq", "qvalue", "impute")
   packageResults_temp = suppressWarnings(suppressMessages(as.data.frame(sapply(.bioc_packages, require, character.only = TRUE))))
   colnames(packageResults_temp) = "Found"
   packageResults_temp$Library = "Bioconductor"
@@ -88,7 +87,7 @@ C3NAPackageCheck <- function() {
   packageResults = rbind(packageResults, packageResults_temp)
   
   ## GitHub Repo
-  .git_packages <- c("SpiecEasi")
+  .git_packages <- c("SpiecEasi", "metagMisc")
   .inst <- .git_packages %in% installed.packages()
   packageResults_temp = suppressWarnings(suppressMessages(as.data.frame(sapply(.git_packages, require, character.only = TRUE))))
   colnames(packageResults_temp) = "Found"

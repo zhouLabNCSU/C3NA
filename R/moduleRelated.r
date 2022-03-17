@@ -745,7 +745,7 @@ comparePhenotypes <- function(C3NAObj_Comparison = C3NAObj1,
   colnames(nodesControlV2) = c("ClusterID_Control", "colors_Control")
   nodesControlV2$TaxaName = rownames(nodesControl)
 
-  nodesAll = merge(nodesDiseaseV2, nodesControlV2, by = "TaxaName")
+  nodesAll = merge(nodesDiseaseV2, nodesControlV2, by = "TaxaName", all = TRUE)
   modulePreservation = suppressWarnings(.updated_modulePreservation(
     multiData = multiAdj, multiColor = colorList, 
     multiWeights = NULL,dataIsExpr = FALSE, 

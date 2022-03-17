@@ -27,21 +27,54 @@ To run the application locally, you are required to install R and R Studio. C3NA
   + Please check https://www.rstudio.com/ for the installation of RStudio.
 
 
-### Step 2. Install from Github
+### Step 2 Check if all dependent packages are installed properly
+```{r}
+## CRAN Repo
+.cran_packages <- c("stringr", "tibble", "dplyr", "readr", "stats", "visNetwork", 
+                    "igraph", "scales", "magrittr", "tidyr", "randomcoloR", 
+                    "ggpubr", "ggplot2",  "plotly", "colorspace", 
+                    "reshape2", "shiny", "shinyWidgets", "shinydashboard", 
+                    "shinyjs", "reactable", "DT", "pheatmap", "dynamicTreeCut", 
+                    "cluster", "WGCNA", "RColorBrewer", "base64enc", "htmlwidgets",
+                    "foreach")
+.inst <- .cran_packages %in% installed.packages()
+if (any(!.inst)){
+  install.packages(.cran_packages[!.inst],repos = "http://cran.rstudio.com/",
+                   dependencies = TRUE)
+}
+
+## Bioconductor Repo
+.bioc_packages <- c("phyloseq", "qvalue", "impute")
+.inst <- .bioc_packages %in% installed.packages()
+if (!requireNamespace("BiocManager", quietly = TRUE))
+  install.packages("BiocManager")
+if(any(!.inst)){
+  BiocManager::install(.bioc_packages[!.inst])
+}
+## GitHub Repo
+.git_packages <- c("SpiecEasi", "metagMisc")
+.git_packagesPath <- c("zdk123/SpiecEasi", "vmikk/metagMisc")
+.inst <- .git_packages %in% installed.packages()
+if (any(!.inst)){
+  devtools::install_github(.git_packagesPath[!.inst])
+}
+```
+Once the required package check is complete, you will be able to use C3NA package, and please check out a full tutorials with demo under **Articles** tab on the top guide bar. 
+
+### Step 3. Install from Github
 ```{r, eval = FALSE}
 # install.packages("devtools")
 library(devtools)
 install_github("zhouLabNCSU/C3NA")
 ```
 
-### Step 3. Check if all dependent packages are installed properly
-Because of the interactive R Shiny environment, C3NA required a large number of packages to be installed. 
-Please run the following function to check if all packages are successfully installed. The function will output a table, and please make sure the column under "Found" are all **TRUE**
-
+### Step 4. Package Check
 ```{r}
 library(C3NA)
 C3NAPackageCheck()
 ```
+Because of the interactive R Shiny environment, C3NA required a large number of packages to be installed. 
+Please run the following function to check if all packages are successfully installed. The function will output a table, and please make sure the column under "Found" are all **TRUE**
 
-Once the required package check is complete, you will be able to use C3NA package, and please check out a full tutorials with demo under **Articles** tab on the top guide bar. 
+
 

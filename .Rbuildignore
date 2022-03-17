@@ -5,3 +5,4 @@
 ^\.Rproj\.user$
 ^\./www/figures$
 ^\./permutedStats-actualModules\.RData$
+^\./man/figures$

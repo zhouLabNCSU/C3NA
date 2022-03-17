@@ -42,5 +42,5 @@ Collate:
     'updatedWGCNAPreservationFuncs.R'
     'influentialTaxa.r'
 Suggests: 
-  rmarkdown, knitr, curl, ANCOMBC, ALDEx2, Maaslin2
+  rmarkdown, knitr, curl, ANCOMBC, ALDEx2, Maaslin2, tidyverse
 VignetteBuilder: knitr

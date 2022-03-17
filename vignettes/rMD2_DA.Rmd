@@ -64,7 +64,6 @@ taxaCountMatrices_Abs = list()
 psList <- list()
 for(t in seq_along(taxaLvls)){
   curLevel = taxaLvls[t]
-  print(curLevel)
   psTemp = tax_glom(newPS_ps, curLevel, NArm = FALSE)
   curOTUs = as.data.frame(as.matrix(otu_table(psTemp)))
   ## Summing NAs

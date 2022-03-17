@@ -4,3 +4,23 @@ template:
   params:
     bootswatch: cosmo
 
+reference:
+  - title: C3NA Workflow
+    contents:
+    - validatePhloseq
+    - initiateC3NA
+    - getOptMods
+    - comparePhenotypes
+    - getInfluentialTaxa
+    - extractResults
+
+  - title: Shiny Applications
+    contents:
+    - moduleEvals
+    - compareTwoPhenoShiny
+
+  - title: Miscellaneous
+    contents:
+    - CRC_Phyloseq
+    - C3NAPackageCheck
+
