@@ -128,14 +128,12 @@ extractResults <- function(twoPhenoC3NAObj = twoPhenoC3NAObj){
   if(!is.null(twoPhenoC3NAObj$C3NA_Wilcoxon)){
     curNodes = curNodes %>%
       left_join(twoPhenoC3NAObj$C3NA_Wilcoxon[, c("TaxaName", "C3NA")], 
-                by = "TaxaName", all.x = TRUE) %>%
-      mutate(C3NA = ifelse(is.na(C3NA), FALSE, C3NA))
+                by = "TaxaName") 
   }
   if(!is.null(twoPhenoC3NAObj$DA)){
     curNodes = curNodes %>%
       left_join(twoPhenoC3NAObj$DA, 
-                by = "TaxaName", all.x = TRUE) %>%
-      mutate(C3NA = ifelse(is.na(C3NA), FALSE, C3NA))
+                by = "TaxaName") 
   }
   
   ### Replace names with the correct phenotypes

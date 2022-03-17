@@ -105,7 +105,7 @@ unlink("./permutedStats-actualModules.RData",recursive=TRUE)
 ```
 
 ### Step 5. Adding the C3NA Influential Taxa 
-```{r}
+```{r, results='hide'}
 CancerVsNormal_C3NA = getInfluentialTaxa(CancerVsNormal_C3NA)
 ```
 
