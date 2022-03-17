@@ -27,6 +27,6 @@ Workflow
 --------
   <img src="man/figures/C3NAPipeline.png" align="center"/>
   
-  Package Documents and Tutorials
+Package Documents and Tutorials
 -------------------------------
-  - [Package Home Page]()
+  - [Package Home Page](https://zhoulabncsu.github.io/C3NA/index.html)
