@@ -1,0 +1,206 @@
+---
+title: "Differential Abundance Analysis"
+author: "Kuncheng Song"
+date: "3/16/2022"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Differential Abundance Analysis}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+  \usepackage[utf8]{inputenc}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+This is a brief tutorial for conducting differential abundance analysis between two phenotypes and how to correctly add any types of DA analysis to C3NA object for interactive investigation of the co-occurence network. There are three differential abundance analysis done, including ANCOMBC, ALDEx2, and MaAsLin2, all of which conduct differential abundance analysis for each of the taxonomic levels individually. The results are summarized into a single DA table to be added to C3NA. As recommended by other studies, we will filter the count matrices from each taxonomic levels by 10% prevalance prior to running the DA methods. 
+
+## Library
+```{r, warning=FALSE}
+library(ANCOMBC)
+library(ALDEx2)
+library(Maaslin2)
+library(curl)
+library(DT)
+library(phyloseq)
+library(metagMisc)
+suppressPackageStartupMessages(library(tidyverse))
+```
+
+## Step 1. Loading the phyloseq data from GitHub
+The downloaded data is a phyloseq object with 261 samples, of which 127 are Colorectal Cancer Patients and 134 are healthy control. 
+```{r}
+githubURL <- ("https://github.com/zhouLabNCSU/C3NA_ScriptsAndData/raw/main/RPackageTutorialData/Post-initiateC3NA/cancer_dada2_CancerAndNormal.rds")
+CancerAndNormal <- readRDS(url(githubURL, method="libcurl"))
+print(CancerAndNormal)
+```
+
+## Step 2. Generating the Data Matrices for Differential Abundance Analysis
+```{r}
+# Remove OTUs that do not present among these phenotypes and reformat the data
+newPS_otu = as.data.frame(as.matrix(otu_table(CancerAndNormal)))
+newPS_otu = newPS_otu[which(rowSums(newPS_otu) > 0),]
+newPS_tax = as.data.frame(as.matrix(tax_table(CancerAndNormal)))
+newPS_tax = newPS_tax[rownames(newPS_otu), ]
+newPS_meta = as.data.frame(as.matrix(sample_data(CancerAndNormal)))
+newPS_meta = subset(newPS_meta, diagnosis %in% c("Normal", "Cancer"))
+newPS_ps = phyloseq(otu_table(newPS_otu, taxa_are_rows=TRUE),
+                             tax_table(as.matrix(newPS_tax)),
+                             sample_data(newPS_meta))
+print(newPS_ps)
+DT::datatable(head(newPS_tax))
+```
+*Ideally, this should match the taxa names used for the C3NA. Ideally, there should not be any t*
+
+```{r}
+# Create a phyloseq object for each taxonomic level
+taxaLvls <- c("Phylum", "Class", "Order", "Family", "Genus", "Species")
+taxaHeaders <- c("p", "c", "o", "f", "g", "s")
+taxaCountMatrices_Abs = list()
+psList <- list()
+for(t in seq_along(taxaLvls)){
+  curLevel = taxaLvls[t]
+  print(curLevel)
+  psTemp = tax_glom(newPS_ps, curLevel, NArm = FALSE)
+  curOTUs = as.data.frame(as.matrix(otu_table(psTemp)))
+  ## Summing NAs
+  curOTUs$TEMP = as.character(as.data.frame(as.matrix(tax_table(psTemp)))[, curLevel])
+  curOTUs <- curOTUs %>%
+    mutate(TEMP = ifelse(is.na(TEMP), "NA", TEMP)) %>%
+    group_by(TEMP) %>%
+    summarise_if(is.numeric, sum) %>%
+    column_to_rownames("TEMP")
+  ## Add the prefix of taxa
+  curHeader = taxaHeaders[t]
+  rownames(curOTUs) <- paste0(curHeader,"_",rownames(curOTUs))
+
+  ## Phyloseq Object
+  curData = curOTUs
+  curData[is.na(curData)] <- 0
+  curData <- curData[rowSums(curData)>0, ]  
+  tempTaxa = matrix(c(rownames(curData)), ncol = 1)
+  colnames(tempTaxa) <- "MixedTaxa"
+  rownames(tempTaxa) <- tempTaxa[, 1]
+  tempPS = phyloseq(otu_table(curData, taxa_are_rows=TRUE),
+                    tax_table(tempTaxa),
+                    sample_data(psTemp))
+
+  ## Save the Objects
+  taxaCountMatrices_Abs[[curLevel]] = curOTUs
+  psList[[taxaLvls[t]]] <- tempPS
+}
+```
+
+#### Create a DA Summary Table
+```{r}
+DA_Summary = data.frame(
+  TaxaName = NULL, DAMethod = NULL, DiffAbn = NULL
+)
+```
+
+## Step 3. ANCOMBC
+```{r}
+for(i in seq_along(taxaLvls)){
+  print(paste0(taxaLvls[i]))
+  curSample = psList[[taxaLvls[i]]]
+  tempOriNTaxa = nrow(otu_table(curSample))
+  curSample = phyloseq_filter_prevalence(curSample, prev.trh = 0.1, abund.trh = NULL,
+  	threshold_condition = "AND", abund.type = "total")
+  ## ANCOMBC with BH
+  curANCOMBC = ANCOMBC::ancombc(phyloseq = curSample, formula = "diagnosis",
+                                p_adj_method = "BH", zero_cut = 1, 
+                                lib_cut = 0, group = "diagnosis",
+                                struc_zero = TRUE, neg_lb = TRUE, 
+                                tol = 1e-5, max_iter = 100, conserve = FALSE, 
+                                alpha = 0.05, global = FALSE)
+  curANCOMBC_Res = curANCOMBC$res
+  DA_Summary_Summary_temp = data.frame(
+      DAMethod = "ANCOMBC",
+      TaxaName = rownames(curANCOMBC_Res$beta),
+      diff_abn = curANCOMBC_Res$diff_abn[,1])
+  DA_Summary = rbind(DA_Summary, DA_Summary_Summary_temp)
+}
+```
+
+
+## Step 4. ALDEx2
+```{r}
+for(i in seq_along(taxaLvls)){
+  print(paste0(taxaLvls[i]))
+  curSample = psList[[taxaLvls[i]]]
+  tempOriNTaxa = nrow(otu_table(curSample))
+  curSample = phyloseq_filter_prevalence(curSample, prev.trh = 0.1, abund.trh = NULL,
+  	threshold_condition = "AND", abund.type = "total")
+  ## ALDEx2 with BH
+  curALDEx2 <- ALDEx2::aldex(data.frame(phyloseq::otu_table(curSample)), 
+                             phyloseq::sample_data(curSample)$diagnosis, 
+                             test="t", effect = TRUE, denom="all")
+  DA_Summary_Summary_temp = data.frame(
+    DAMethod = "ALDEx2",
+    TaxaName = rownames(curALDEx2),
+    diff_abn = ifelse(curALDEx2$wi.eBH <=0.05, TRUE, FALSE))
+  DA_Summary = rbind(DA_Summary, DA_Summary_Summary_temp)
+}
+```
+
+
+## Step 5. MaAsLin2
+```{r}
+outputFileNames = c()
+for(i in seq_along(taxaLvls)){
+  print(paste0(taxaLvls[i]))
+  curSample = psList[[taxaLvls[i]]]
+  tempOriNTaxa = nrow(otu_table(curSample))
+  curSample = phyloseq_filter_prevalence(curSample, prev.trh = 0.1, abund.trh = NULL,
+  	threshold_condition = "AND", abund.type = "total")
+  ## MaAsLin2 with BH
+  curMaAsLin2 = Maaslin2::Maaslin2(
+    input_data = data.frame(phyloseq::otu_table(curSample)), 
+    input_metadata = data.frame(phyloseq::sample_data(curSample)), 
+    output = paste0(taxaLvls[i]), 
+    transform = "AST",
+    fixed_effects = "diagnosis",
+    normalization = "TSS",
+    standardize = FALSE,
+    min_prevalence = 0, plot_heatmap = FALSE, plot_scatter = FALSE)
+  DA_Summary_Summary_temp = data.frame(
+    DAMethod = "MaAsLin2",
+    TaxaName = curMaAsLin2$results$feature,
+    diff_abn = ifelse(curMaAsLin2$results$qval <=0.05, TRUE, FALSE)
+  )
+  DA_Summary = rbind(DA_Summary, DA_Summary_Summary_temp)
+  ## Delete the temp folder 
+  unlink(taxaLvls[i],recursive=TRUE)
+}
+```
+
+## Step 6. Convert the Differential Abundance Analysis to a Summary
+The shiny application accept a data.frame as shown below to be included into the interactive network display. 
+```{r}
+DASummaryTable = DA_Summary %>%
+  pivot_wider(values_from = diff_abn, names_from = DAMethod, id_cols = TaxaName) %>%
+  relocate(TaxaName) ## Relocate the TaxaName column to the front <-- Important!
+DT::datatable(DASummaryTable, options = list(pageLength = 20))
+```
+
+## Step 7. Adding to C3NA Object
+Now the DASummaryTable can be easily added to the C3NA object after the comparePhenotypes() function. The Shiny program will use the TaxaName (first column), and the remaining columns as selectable differential abundance methods in TRUE/FALSE format. Please make sure you only has the TaxaName column followed by a number of DA methods (with unique column names)
+```{r, eval = FALSE}
+## From Tutorial with Demo Step 4:
+CancerVsNormal_C3NA = comparePhenotypes(C3NAObj_Comparison =  Cancer_C3NA, 
+                                        C3NAObj_Reference = Normal_C3NA,
+                                        corCutoff = 0.2, fdr = 0.05, unusefulTaxa = NA, 
+                                        nBootstrap = 100, verbose = FALSE)
+CancerVsNormal_C3NA$DA = DASummaryTable
+```
+
+
+
+
+
+
+

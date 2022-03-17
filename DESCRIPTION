@@ -1,0 +1,46 @@
+Package: C3NA
+Type: Package
+Title: Correlation and Consensus Based Network Analysis (C3NA)
+Description: The correlation and consensus-based cross-taxonomy network analysis 
+  (C3NA) is an R package for analyzing compositional microbial data, particularly 
+  the 16S rRNA amplicon sequencing data. The C3NA package contains tools to facilitate 
+  analysis and shiny interactive applications to uncover complex taxa-taxa 
+  associations within one or a comparison between two phenotypes. 
+Version: 1.0.0
+Date: 2022-02-12
+Author: Kuncheng Song
+Authors@R:  c(
+    person("Kuncheng", "Song", 
+           email = "ksong4@ncsu.edu",   
+           role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0002-8680-1970")),
+    person("Yi-Hui", "Zhou", 
+           role = "aut",
+           email = "yihui_zhou@ncsu.edu",
+           comment = c(ORCID = "0000-0002-4092-7463"))
+    )
+License: GPL-3 + file LICENSE
+URL: https://github.com/zhouLabNCSU/C3NA/
+BugReports: https://github.com/zhouLabNCSU/C3NA/issues
+LazyData: true
+Depends:
+  R (>= 3.5.0)
+Imports: stringr, tibble, dplyr, readr, stats, visNetwork, igraph, scales,
+  magrittr, tidyr, randomcoloR, ggpubr, ggplot2, qvalue, plotly, colorspace,
+  phyloseq, reshape2, SpiecEasi, metagMisc, shiny, shinyWidgets, shinydashboard,
+  shinyjs, reactable, DT, pheatmap, dynamicTreeCut, cluster, WGCNA,
+  RColorBrewer, base64enc, htmlwidgets, impute, foreach
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.2
+Collate:
+    'global.r'
+    'miscFunctions.r'
+    'data.r'
+    'moduleRelated.r'
+    'shinyMethods.R'
+    'updatedWGCNAPreservationFuncs.R'
+    'influentialTaxa.r'
+Suggests: 
+  rmarkdown, knitr, curl, ANCOMBC, ALDEx2, Maaslin2
+VignetteBuilder: knitr

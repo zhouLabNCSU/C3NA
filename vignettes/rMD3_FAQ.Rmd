@@ -1,0 +1,36 @@
+---
+title: "FAQ"
+author: "Kuncheng Song"
+date: "3/16/2022"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{FAQ}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+  \usepackage[utf8]{inputenc}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+#### How to access in-Shiny help files
+For both Shiny application, each sub-section has a question mark in the title which the user can click to get a description for the section:
+```{r, echo = FALSE, out.width="900px"}
+knitr::include_graphics("../man/figures/ClickDemo.gif")
+```
+
+#### taxa_are_rows error
+If you obtain an error indicating a missing 'taxa_are_rows' functions when running the intitiateC3NA(), 
+please load the phyloseq package as shown below:
+```{r, eval = FALSE}
+library(phyloseq)
+C3NAObj = inititateC3NA(...)
+```
+
+#### Minimal edited WGCNA::modulePreservation() and its R Script
+There is a potenital bug on the WGCNA::modulePreservation() function, in the 1.70.-3 (Last updated time from CRAN 2021-02-28). The only adjustment to the function is for modulePreservation() on line # 1491 (https://github.com/cran/WGCNA/blob/master/R/modulePreservation.R), and it was commented out. This is a bug as the weightsRef is not a parameter of interst when using an adjacency matrix as an input since adjacency matrix carries no weight. However, because the modulePreservation function used a few internal functions, the current treatment for this is to source the entire modulePreservation.R script with line 1491 commented out. This source will be removed once the bug has been fix. 
+
