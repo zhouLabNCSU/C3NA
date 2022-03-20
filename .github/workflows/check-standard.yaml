@@ -20,8 +20,7 @@ jobs:
         config:
           - {os: macOS-latest,   r: '4.0'}
           - {os: windows-latest, r: '4.0'}
-          - {os: ubuntu-latest,   r: '4.0', http-user-agent: 'release'}
-          - {os: ubuntu-latest,   r: '3.6'}
+          - {os: ubuntu-latest,   r: '4.0'}
 
     env:
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
@@ -43,15 +42,16 @@ jobs:
         if: runner.os == 'Linux'
         run: |
           sudo apt install -y libcurl4-openssl-dev
+          sudo apt install -y libglpk40
           
       - name: Install R dependencies
         run: |
-          install.packages(c("remotes","BiocManager", 'dplyr', 'readr', 'visNetwork', 'tidyr', 'randomcoloR', 'ggpubr', 'plotly', 'shiny', 'shinyWidgets', 'shinydashboard', 'shinyjs', 'reactable', 'DT', 'pheatmap', 'dynamicTreeCut', 'WGCNA', 'base64enc', 'htmlwidgets', 'rmarkdown'))
+          install.packages(c("remotes","BiocManager", 'dplyr', 'readr', 'visNetwork', 'tidyr', 'randomcoloR', 'ggpubr', 'plotly', 'shiny', 'shinyWidgets', 'shinydashboard', 'shinyjs', 'reactable', 'DT', 'pheatmap', 'dynamicTreeCut', 'WGCNA', 'base64enc', 'htmlwidgets', 'rmarkdown', ' 'tidyverse'))
           # Install Knitr
           install.packages("knitr")
           # BiocManger Install
           options("BioC_mirror"="https://ftp.gwdg.de/pub/misc/bioconductor")
-          BiocManager::install(c('phyloseq', 'qvalue', 'impute', 'GO.db', 'preprocessCore'))
+          BiocManager::install(c('phyloseq', 'qvalue', 'impute', 'GO.db', 'preprocessCore', 'ANCOMBC', 'Maaslin2', 'ALDEx2'))
           remotes::install_github("zdk123/SpiecEasi", upgrade="never")
           remotes::install_github("vmikk/metagMisc", upgrade="never")
           remotes::install_cran("rcmdcheck")

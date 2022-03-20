@@ -304,7 +304,7 @@ moduleEvals = function(C3NAObj = C3NAObj, colorSeed = 9){
         output$patternSelector <- renderUI({
           awesomeCheckboxGroup(
             inputId = "patternSelector",
-            label = "Default selection includes all unique patterns with ≥ ten unique modules", 
+            label = "Default selections include all unique patterns with greater or equal to ten unique modules", 
             choices = formatC(C3NAObj$misc$minModuleSize:C3NAObj$misc$maxModuleSize,flag=0,width=2), 
             selected = formatC(moduleCheckRemoveDup,flag=0,width=2),
             inline = TRUE, 
