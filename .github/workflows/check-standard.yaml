@@ -46,7 +46,7 @@ jobs:
           
       - name: Install R dependencies
         run: |
-          install.packages(c("remotes","BiocManager", 'dplyr', 'readr', 'visNetwork', 'tidyr', 'randomcoloR', 'ggpubr', 'plotly', 'shiny', 'shinyWidgets', 'shinydashboard', 'shinyjs', 'reactable', 'DT', 'pheatmap', 'dynamicTreeCut', 'WGCNA', 'base64enc', 'htmlwidgets'))
+          install.packages(c("remotes","BiocManager", 'dplyr', 'readr', 'visNetwork', 'tidyr', 'randomcoloR', 'ggpubr', 'plotly', 'shiny', 'shinyWidgets', 'shinydashboard', 'shinyjs', 'reactable', 'DT', 'pheatmap', 'dynamicTreeCut', 'WGCNA', 'base64enc', 'htmlwidgets', 'rmarkdown'))
           # Install Knitr
           install.packages("knitr")
           # BiocManger Install

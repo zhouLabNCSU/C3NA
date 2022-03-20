@@ -41,7 +41,7 @@ There are two interaction shiny applications: Module Evaluations and Compare Two
 ## Module Evaluations Shiny 
   <img src="man/figures/Shiny1PanelGuide.jpg" align="center"/>
   <br>
-<span style="background-color: #4D4D4D; font-weight: bold">Block 1</span>
+- ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) DDD
 
 
 ## Compare Two Phenotypes Shiny 
