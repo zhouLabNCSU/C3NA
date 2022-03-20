@@ -46,16 +46,16 @@ jobs:
           
       - name: Install R dependencies
         run: |
-          install.packages(c("remotes","BiocManager", 'dplyr', 'readr', 'visNetwork', 'tidyr', 'randomcoloR', 'ggpubr', 'plotly', 'shiny', 'shinyWidgets', 'shinydashboard', 'shinyjs', 'reactable', 'DT', 'pheatmap', 'dynamicTreeCut', 'WGCNA', 'base64enc', 'htmlwidgets', 'rmarkdown', 'tidyverse', 'Rfast'))
+          install.packages(c("remotes","BiocManager", 'dplyr', 'readr', 'visNetwork', 'tidyr', 'randomcoloR', 'ggpubr', 'plotly', 'shiny', 'shinyWidgets', 'shinydashboard', 'shinyjs', 'reactable', 'DT', 'pheatmap', 'dynamicTreeCut', 'WGCNA', 'base64enc', 'htmlwidgets', 'rmarkdown', 'tidyverse', 'Rfast'. 'locfit'))
           # Install Knitr
           install.packages("knitr")
           # BiocManger Install
           options("BioC_mirror"="https://ftp.gwdg.de/pub/misc/bioconductor")
-          BiocManager::install(c('phyloseq', 'qvalue', 'impute', 'GO.db', 'preprocessCore', 'ANCOMBC', 'Maaslin2', 'ALDEx2', 'AnnotationDbi', 'edgeR', 'metagenomeSeq'))
+          BiocManager::install(c('phyloseq', 'qvalue', 'impute', 'GO.db', 'preprocessCore', 'ANCOMBC', 'Maaslin2', 'ALDEx2', 'AnnotationDbi', 'edgeR', 'metagenomeSeq', 'Wrench'))
           # Try to install WGCNA, Maaslin2 & ALDEx2 again if failed, since they have dependncies from BiocManager packages
           if(!require("WGCNA", quietly = TRUE)){install.packages("WGCNA", dependencies = FALSE)}
           if(!require("Maaslin2", quietly = TRUE)){install.packages("Maaslin2", dependencies = FALSE)}
-          if(!require("Maaslin2", quietly = TRUE)){install.packages("ALDEx2", dependencies = FALSE)}
+          if(!require("ALDEx2", quietly = TRUE)){install.packages("ALDEx2", dependencies = FALSE)}
           remotes::install_github("zdk123/SpiecEasi", upgrade="never")
           remotes::install_github("vmikk/metagMisc", upgrade="never")
           remotes::install_cran("rcmdcheck")
