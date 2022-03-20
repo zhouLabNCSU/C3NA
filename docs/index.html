@@ -108,7 +108,7 @@
 <li><a href="#installation">Installation</a></li>
 <li><a href="#workflow">Workflow</a></li>
 <li><a href="#package-documents-and-tutorials">Package Documents and Tutorials</a></li>
-<li><a href="#shiny-domenstration">Shiny Demonstration</a></li>
+<li><a href="#shiny-domonstration">Shiny Demonstration</a></li>
 </ol>
 </div>
 <div class="section level2">
@@ -144,18 +144,19 @@
 <p><img src="reference/figures/Shiny1PanelGuide.jpg" align="center"><br> The evaluation of the modules should follow the sequence: 2 &gt;&gt; 3 &gt;&gt; 4</p>
 <ul>
 <li>
-<img src="https://via.placeholder.com/15/4d4d4d/000000?text=+" alt="#4d4d4d"><code>1</code>: Shiny panel navigation, including the ‘Consensus-Based Evaluations’ and ‘Download Panel’.</li>
+<img src="https://via.placeholder.com/15/4d4d4d/000000?text=+" alt="#4d4d4d"> 1: Shiny panel navigation, including the ‘Consensus-Based Evaluations’ and ‘Download Panel’.</li>
 <li>
-<img src="https://via.placeholder.com/15/c13004/000000?text=+" alt="#c13004"> Unique patterns of the modules based on a range of minimal number of taxa per module. The darkened columns highlighted the duplicated patterns which are not included in the consensus-based evaluations.<br>
+<img src="https://via.placeholder.com/15/c13004/000000?text=+" alt="#c13004"> 2: Unique patterns of the modules based on a range of minimal number of taxa per module. The darkened columns highlighted the duplicated patterns which are not included in the consensus-based evaluations.<br>
 </li>
 <li>
-<img src="https://via.placeholder.com/15/820104/000000?text=+" alt="#820104"> Manually select the pattern columns. Default will select all unique patterns with modules greater or equal to ten.</li>
+<img src="https://via.placeholder.com/15/820104/000000?text=+" alt="#820104"> 3: Manually select the pattern columns. Default will select all unique patterns with modules greater or equal to ten.</li>
 <li>
-<img src="https://via.placeholder.com/15/3e55a0/000000?text=+" alt="#3e55a0"> Manually select the optimal number of modules based on the silhouette, consensus and correlation plots below.</li>
+<img src="https://via.placeholder.com/15/3e55a0/000000?text=+" alt="#3e55a0"> 4: Manually select the optimal number of modules based on the silhouette, consensus and correlation plots below.</li>
 <li>
-<img src="https://via.placeholder.com/15/3e55a0/000000?text=+" alt="#3e55a0"> Generate the code the use should run after confirming the optimal selected patterns and optimal number of modules.</li>
+<img src="https://via.placeholder.com/15/3e55a0/000000?text=+" alt="#3e55a0"> 5: Generate the code the use should run after confirming the optimal selected patterns and optimal number of modules.</li>
 <li>
-<img src="https://via.placeholder.com/15/427f94/000000?text=+" alt="#427f94"> Plot display panel including silhouette, consensus and correlation plots.</li>
+<img src="https://via.placeholder.com/15/427f94/000000?text=+" alt="#427f94"> 6: Plot display panel including silhouette, consensus and correlation plots.</li>
+<li><a href="https://zhoulabncsu.github.io/C3NA/articles/rMD4_ModEvals.html" class="external-link">Detailed Guide</a></li>
 </ul>
 </div>
 <div class="section level3">
@@ -164,21 +165,22 @@
 <p><img src="reference/figures/Shiny2PanelGuide.jpg" align="center"></p>
 <ul>
 <li>
-<img src="https://via.placeholder.com/15/4d4d4d/000000?text=+" alt="#4d4d4d"> Shiny panel navigation, including the ‘Compare Two Conditions’ and ‘Download Panel’.</li>
+<img src="https://via.placeholder.com/15/4d4d4d/000000?text=+" alt="#4d4d4d"> 1: Shiny panel navigation, including the ‘Compare Two Conditions’ and ‘Download Panel’.</li>
 <li>
-<img src="https://via.placeholder.com/15/c13004/000000?text=+" alt="#c13004"> Dataset information from the two conditions, including shared and different taxa from various taxonomic levels.</li>
+<img src="https://via.placeholder.com/15/c13004/000000?text=+" alt="#c13004"> 2: Phenotype-based information from the two conditions, including shared and different taxa from various taxonomic levels.</li>
 <li>
-<img src="https://via.placeholder.com/15/427f94/000000?text=+" alt="#427f94"> Module-based taxa comparison between the two phenotypes.</li>
+<img src="https://via.placeholder.com/15/427f94/000000?text=+" alt="#427f94"> 3: Module-based taxa comparison between the two phenotypes.</li>
 <li>
-<img src="https://via.placeholder.com/15/13394e/000000?text=+" alt="#13394e"> Module preservation investigation, the left plot shows the Median Rank Vs. Z Summary with the node size reflect number of taxa in the respective module. The right plot is an interactive table from react to the click of the module preservation plot.</li>
+<img src="https://via.placeholder.com/15/13394e/000000?text=+" alt="#13394e"> 4: Module preservation investigation, the left plot shows the Median Rank Vs. Z Summary with the node size reflect number of taxa in the respective module. The right plot is an interactive table from react to the click of the module preservation plot.</li>
 <li>
-<img src="https://via.placeholder.com/15/9a0002/000000?text=+" alt="#9a0002"> Taxa selector for the interactive display in Panels 6-8. The user can select multiple taxa from the left columns (includes all significant taxa from both phenotypes), to remove the selected taxon, you can click the taxon from the right column</li>
+<img src="https://via.placeholder.com/15/9a0002/000000?text=+" alt="#9a0002"> 5: Taxa selector for the interactive display in Panels 6-8. The user can select multiple taxa from the left columns (includes all significant taxa from both phenotypes), to remove the selected taxon, you can click the taxon from the right column</li>
 <li>
-<img src="https://via.placeholder.com/15/5c0004/000000?text=+" alt="#5c0004"> Bar plot for the taxa membership among the modules from either phenotypes. The user can switch between viewing all taxa or the selected taxa from the ‘Taxa Selector’. For better display, the bar plot will only display the select taxon and its children taxonomic level taxa. Please click on the left filter icon to view plot-based options.</li>
+<img src="https://via.placeholder.com/15/5c0004/000000?text=+" alt="#5c0004"> 6: Bar plot for the taxa membership among the modules from either phenotypes. The user can switch between viewing all taxa or the selected taxa from the ‘Taxa Selector’. For better display, the bar plot will only display the select taxon and its children taxonomic level taxa. Please click on the left filter icon to view plot-based options.</li>
 <li>
-<img src="https://via.placeholder.com/15/5c0004/000000?text=+" alt="#5c0004"> Network plot based on the selected taxa. Mulitple options are available from the top left filter icon.</li>
+<img src="https://via.placeholder.com/15/359d8b/000000?text=+" alt="#359d8b"> 7: Network plot based on the selected taxa. Mulitple options are available from the top left filter icon.</li>
 <li>
-<img src="https://via.placeholder.com/15/427f94/000000?text=+" alt="#427f94"> Single and sequentially clicked taxa and their respective log2-transformed count from both phenotypes.</li>
+<img src="https://via.placeholder.com/15/005b5e/000000?text=+" alt="#005b5e"> 8: Single and sequentially clicked taxa and their respective log2-transformed count from both phenotypes.</li>
+<li><a href="https://zhoulabncsu.github.io/C3NA/articles/articles/rMD5_ComparePhenotypes.html" class="external-link">Detailed Guide</a></li>
 </ul>
 </div>
 </div>

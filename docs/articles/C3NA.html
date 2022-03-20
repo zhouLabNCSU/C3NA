@@ -61,6 +61,12 @@
     <li>
       <a href="../articles/rMD3_FAQ.html">FAQ</a>
     </li>
+    <li>
+      <a href="../articles/rMD4_ModEvals.html">Tutorial on Using Module Evaluation Shiny</a>
+    </li>
+    <li>
+      <a href="../articles/rMD5_ComparePhenotypes.html">Tutorials on Using Compare Phenotypes Shiny</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -135,7 +141,7 @@
 <span class="op">}</span>
 
 <span class="co">## Bioconductor Repo</span>
-<span class="va">.bioc_packages</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"phyloseq"</span>, <span class="st">"qvalue"</span>, <span class="st">"impute"</span><span class="op">)</span>
+<span class="va">.bioc_packages</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"phyloseq"</span>, <span class="st">"qvalue"</span>, <span class="st">"impute"</span>, <span class="st">'GO.db'</span>, <span class="st">'preprocessCore'</span><span class="op">)</span>
 <span class="va">.inst</span> <span class="op">&lt;-</span> <span class="va">.bioc_packages</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/installed.packages.html" class="external-link">installed.packages</a></span><span class="op">(</span><span class="op">)</span>
 <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
   <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span>
