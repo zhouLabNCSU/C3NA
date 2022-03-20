@@ -1,5 +1,9 @@
 Correlation and Consensus-based Cross-taxonomy Network Analysis (C3NA) <a href='https://github.com/zhouLabNCSU/C3NA/'><img src = "./man/figures/RPackageLogo.jpg" align="right" width = "120" height = "100%"/></a>
 ==
+<!-- badges: start -->
+[![R-CMD-check (R V4.1)](https://github.com/zhouLabNCSU/C3NA/actions/workflows/check-standard.yaml/badge.svg)](https://github.com/zhouLabNCSU/C3NA/actions/workflows/check-standard.yaml)
+[![pkgdown-deployment](https://github.com/zhouLabNCSU/C3NA/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/zhouLabNCSU/C3NA/actions/workflows/pages/pages-build-deployment)
+<!-- badges: end -->
 
 Table of Contents
 ---
