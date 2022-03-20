@@ -62,7 +62,7 @@ The evaluation of the modules should follow the sequence: 2 >> 3 >> 4
 - ![#5c0004](https://via.placeholder.com/15/5c0004/000000?text=+) 6: Bar plot for the taxa membership among the modules from either phenotypes. The user can switch between viewing all taxa or the selected taxa from the 'Taxa Selector'. For better display, the bar plot will only display the select taxon and its children taxonomic level taxa. Please click on the left filter icon to view plot-based options. 
 - ![#359d8b](https://via.placeholder.com/15/359d8b/000000?text=+) 7: Network plot based on the selected taxa. Mulitple options are available from the top left filter icon. 
 - ![#005b5e](https://via.placeholder.com/15/005b5e/000000?text=+) 8: Single and sequentially clicked taxa and their respective log2-transformed count from both phenotypes. 
-- [Detailed Guide](https://zhoulabncsu.github.io/C3NA/articles/articles/rMD5_ComparePhenotypes.html)
+- [Detailed Guide](https://zhoulabncsu.github.io/C3NA/articles/rMD5_ComparePhenotypes.html)
 
 
 
