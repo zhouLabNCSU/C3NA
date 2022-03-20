@@ -1186,7 +1186,7 @@ compareTwoPhenoShiny = function(C3NAObj){
         #####  Section 3 Taxa Specific investigation #####
         tags$div(class = "Banner", 
                  tags$div(class = "myHeader", id = "infoPanel1Sec1",
-                          (HTML("Section 3: Network Plots")
+                          (HTML("Section 3: Taxa Investigation")
                           )
                  )
         ),
