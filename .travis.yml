@@ -1,5 +1,0 @@
-language: R
-r: bioc-release
-use_bioc: true
-bioc_required: true
-cache: packages

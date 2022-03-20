@@ -6,3 +6,4 @@
 ^\./www/figures$
 ^\./permutedStats-actualModules\.RData$
 ^\./man/figures$
+^\.github$
