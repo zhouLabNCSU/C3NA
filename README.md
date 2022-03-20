@@ -8,6 +8,7 @@ Table of Contents
 2.  [Installation](#installation)
 3.  [Workflow](#workflow)
 4.  [Package Documents and Tutorials](#package-documents-and-tutorials)
+5.  [Shiny Demo](#shiny-dome)
 
 Description
 -----------
@@ -30,4 +31,10 @@ Workflow
   
 Package Documents and Tutorials
 -------------------------------
+The package homepage contains tutorials and detailed guide for the C3NA pipeline. 
   - [Package Home Page](https://zhoulabncsu.github.io/C3NA/index.html)
+
+Shiny Demonstration
+-------------------
+
+

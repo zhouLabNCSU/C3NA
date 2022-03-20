@@ -44,7 +44,7 @@ if (any(!.inst)){
 }
 
 ## Bioconductor Repo
-.bioc_packages <- c("phyloseq", "qvalue", "impute")
+.bioc_packages <- c("phyloseq", "qvalue", "impute", 'GO.db')
 .inst <- .bioc_packages %in% installed.packages()
 if (!requireNamespace("BiocManager", quietly = TRUE))
   install.packages("BiocManager")
