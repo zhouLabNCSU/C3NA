@@ -28,7 +28,7 @@ To run the application locally, you are required to install R and R Studio. C3NA
 
 
 ### Step 2 Check if all dependent packages are installed properly
-```{r}
+```{r, eval=FALSE}
 ## CRAN Repo
 .cran_packages <- c("stringr", "tibble", "dplyr", "readr", "stats", "visNetwork", 
                     "igraph", "scales", "magrittr", "tidyr", "randomcoloR", 
