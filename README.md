@@ -60,8 +60,8 @@ The evaluation of the modules should follow the sequence: 2 >> 3 >> 4
 - ![#13394e](https://via.placeholder.com/15/13394e/000000?text=+) 4: Module preservation investigation, the left plot shows the Median Rank Vs. Z Summary with the node size reflect number of taxa in the respective module. The right plot is an interactive table from react to the click of the module preservation plot. 
 - ![#9a0002](https://via.placeholder.com/15/9a0002/000000?text=+) 5: Taxa selector for the interactive display in Panels 6-8. The user can select multiple taxa from the left columns (includes all significant taxa from both phenotypes), to remove the selected taxon, you can click the taxon from the right column
 - ![#5c0004](https://via.placeholder.com/15/5c0004/000000?text=+) 6: Bar plot for the taxa membership among the modules from either phenotypes. The user can switch between viewing all taxa or the selected taxa from the 'Taxa Selector'. For better display, the bar plot will only display the select taxon and its children taxonomic level taxa. Please click on the left filter icon to view plot-based options. 
-- ![#5c0004](https://via.placeholder.com/15/5c0004/000000?text=+) 7: Network plot based on the selected taxa. Mulitple options are available from the top left filter icon. 
-- ![#427f94](https://via.placeholder.com/15/427f94/000000?text=+) 8: Single and sequentially clicked taxa and their respective log2-transformed count from both phenotypes. 
+- ![#359d8b](https://via.placeholder.com/15/359d8b/000000?text=+) 7: Network plot based on the selected taxa. Mulitple options are available from the top left filter icon. 
+- ![#005b5e](https://via.placeholder.com/15/005b5e/000000?text=+) 8: Single and sequentially clicked taxa and their respective log2-transformed count from both phenotypes. 
 
 
 

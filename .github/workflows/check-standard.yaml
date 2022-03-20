@@ -51,7 +51,9 @@ jobs:
           install.packages("knitr")
           # BiocManger Install
           options("BioC_mirror"="https://ftp.gwdg.de/pub/misc/bioconductor")
-          BiocManager::install(c('phyloseq', 'qvalue', 'impute', 'GO.db', 'preprocessCore', 'ANCOMBC', 'Maaslin2', 'ALDEx2'))
+          BiocManager::install(c('phyloseq', 'qvalue', 'impute', 'GO.db', 'preprocessCore', 'ANCOMBC', 'Maaslin2', 'ALDEx2', 'AnnotationDbi'))
+          # Try to install WGCNA again if failed, since WGCNA has dependncies from BiocManager packages
+          if(!require("WGCNA", quietly = TRUE)){install.packages("WGCNA", dependencies = FALSE)}
           remotes::install_github("zdk123/SpiecEasi", upgrade="never")
           remotes::install_github("vmikk/metagMisc", upgrade="never")
           remotes::install_cran("rcmdcheck")
