@@ -8,7 +8,7 @@ Table of Contents
 2.  [Installation](#installation)
 3.  [Workflow](#workflow)
 4.  [Package Documents and Tutorials](#package-documents-and-tutorials)
-5.  [Shiny Demonstration](#shiny-domenstration)
+5.  [Shiny Demonstration](#shiny-domonstration)
 
 Description
 -----------
@@ -49,7 +49,7 @@ The evaluation of the modules should follow the sequence: 2 >> 3 >> 4
 - ![#3e55a0](https://via.placeholder.com/15/3e55a0/000000?text=+) 4: Manually select the optimal number of modules based on the silhouette, consensus and correlation plots below. 
 - ![#3e55a0](https://via.placeholder.com/15/3e55a0/000000?text=+) 5: Generate the code the use should run after confirming the optimal selected patterns and optimal number of modules. 
 - ![#427f94](https://via.placeholder.com/15/427f94/000000?text=+) 6: Plot display panel including silhouette, consensus and correlation plots. 
-
+- [Detailed Guide](https://zhoulabncsu.github.io/C3NA/articles/rMD4_ModEvals.html)
 
 ### Compare Two Phenotypes Shiny 
   <img src="man/figures/Shiny2PanelGuide.jpg" align="center"/>
@@ -62,7 +62,7 @@ The evaluation of the modules should follow the sequence: 2 >> 3 >> 4
 - ![#5c0004](https://via.placeholder.com/15/5c0004/000000?text=+) 6: Bar plot for the taxa membership among the modules from either phenotypes. The user can switch between viewing all taxa or the selected taxa from the 'Taxa Selector'. For better display, the bar plot will only display the select taxon and its children taxonomic level taxa. Please click on the left filter icon to view plot-based options. 
 - ![#359d8b](https://via.placeholder.com/15/359d8b/000000?text=+) 7: Network plot based on the selected taxa. Mulitple options are available from the top left filter icon. 
 - ![#005b5e](https://via.placeholder.com/15/005b5e/000000?text=+) 8: Single and sequentially clicked taxa and their respective log2-transformed count from both phenotypes. 
-
+- [Detailed Guide](https://zhoulabncsu.github.io/C3NA/articles/articles/rMD5_ComparePhenotypes.html)
 
 
 

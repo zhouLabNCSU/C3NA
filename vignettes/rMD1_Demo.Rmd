@@ -23,13 +23,13 @@ library(phyloseq)
 
 **NOTE:** For better display of the taxa names and data parsing, we HIGHLY recommended the input tax_table() from the phyloseq object should not have any characters/symbols/spaces in front of the taxa names. For example, some reference database might have taxonomic level indicator in front of the taxa name, e.g. {g}__Bacteroides should be just Bacteroides under the Genus column. Please use gsub() or other text replacer to remove these characters. In addition, place make sure the column names for the taxonomic levels include Phylum, Class, Order, Family, Genus and Species. 
 
-### General Note
+## General Note
 For both Shiny applications, each sub-section has a question mark in the title which the user can click to get a description for the section:
 ```{r, echo = FALSE, out.width="900px"}
 knitr::include_graphics("../man/figures/ClickDemo.gif")
 ```
 
-### Step 1. Load demo data
+## Step 1. Load demo data
 The demo file includes part of the 16S rRNA processed data from Baxter et al., with 127 Cancer and 134 Control subjects.
 ```{r}
 # Loading the default 
@@ -37,7 +37,7 @@ data("CRC_Phyloseq")
 CRC_Phyloseq = validatePhloseq(CRC_Phyloseq)
 ```
 
-### Step 2. Initiate C3NA 
+## Step 2. Initiate C3NA 
 The goal of this step includes extracting a single phenotype object, then processing each of them individually with *initiateC3NA* with sparCC bootstrap, TOM similarity Matrix, and calculating module patterns information from a range of minimal numbers of taxa per module. 
 
 ```{r}
@@ -65,7 +65,7 @@ Normal_C3NA = initiateC3NA(phyloseqObj = Normal, prevTrh = 0.1,
                            seed = 100)
 ```
 
-##### Step 2.1 Load the initiateC3NA results with 1000 iterations
+### Step 2.1 Load the initiateC3NA results with 1000 iterations
 ```{r}
 githubURL <- ("https://github.com/zhouLabNCSU/C3NA_ScriptsAndData/raw/main/RPackageTutorialData/Post-initiateC3NA/cancer_dada2_Cancer.rds")
 Cancer_C3NA  <- readRDS(url(githubURL, method="libcurl"))
@@ -73,7 +73,7 @@ githubURL <- ("https://github.com/zhouLabNCSU/C3NA_ScriptsAndData/raw/main/RPack
 Normal_C3NA  <- readRDS(url(githubURL, method="libcurl"))
 ```
 
-### Step 3. Module Evalutaion Shiny 
+## Step 3. Module Evalutaion Shiny 
 The shiny application will run on your default browser, e.g. Chrome, Firefox, etc.
 ```{r, eval = FALSE}
 # Shiny Evaluation
@@ -81,7 +81,7 @@ moduleEvals(C3NAObj = Cancer_C3NA)
 moduleEvals(C3NAObj = Normal_C3NA)
 ```
 
-##### Step 3.1 Run the Provided Script
+#### Step 3.1 Run the Provided Script
 Please replace the 'oldC3NAObj' and 'newC3NAObj' with the correct and preferred name for your study.
 ```{r}
 # Copy & Paste Generated Commands
@@ -93,7 +93,7 @@ Normal_C3NA = getOptMods(C3NAObj = Normal_C3NA,
                          nModules = 20)
 ```
 
-### Step 4. Compare two phenotypes
+## Step 4. Compare two phenotypes
 This steps will include the module preservation analysis. 
 ```{r, message=FALSE, error=FALSE, results="hide"}
 CancerVsNormal_C3NA = comparePhenotypes(C3NAObj_Comparison =  Cancer_C3NA, 
@@ -104,12 +104,12 @@ CancerVsNormal_C3NA = comparePhenotypes(C3NAObj_Comparison =  Cancer_C3NA,
 unlink("./permutedStats-actualModules.RData",recursive=TRUE)
 ```
 
-### Step 5. Adding the C3NA Influential Taxa 
+## Step 5. Adding the C3NA Influential Taxa 
 ```{r, results='hide'}
 CancerVsNormal_C3NA = getInfluentialTaxa(CancerVsNormal_C3NA)
 ```
 
-### Step 6. Adding Differential Abundance Resutls
+## Step 6. Adding Differential Abundance Resutls
 Please Visit the Differenital Abundance Guide under **Articles** for full tutorials on how to conduct DA analysis and transfer results to C3NA results. 
 ```{r}
 ## Extract the Pre-calculated DA Analysis
@@ -119,28 +119,28 @@ CancerVsNormal_DA  <- readRDS(url(githubURL, method="libcurl"))
 CancerVsNormal_C3NA$DA = CancerVsNormal_DA
 ```
 
-### Step 7. Shiny Investigation of the Results
+## Step 7. Shiny Investigation of the Results
 ```{r, eval = FALSE}
 compareTwoPhenoShiny(CancerVsNormal_C3NA)
 ```
 
-### Step 8. Extract Summarized Results
+## Step 8. Extract Summarized Results
 ```{r}
 output = extractResults(CancerVsNormal_C3NA)
 ```
 
-##### 8.1 Preivew the results - Taxa Taxa Correlations (Edges)
+#### 8.1 Preivew the results - Taxa Taxa Correlations (Edges)
 ```{r}
 DT::datatable(output[["taxaTaxaCorrelations"]][1:100,])
 ```
 
-##### 8.2 Preivew the results - Taxa (Nodes)
+#### 8.2 Preivew the results - Taxa (Nodes)
 ```{r}
 DT::datatable(output[["taxaTable"]][1:50,])
 ```
 
 
-### Session Info
+## Session Info
 ```{r}
 print(sessionInfo())
 ```

@@ -1091,7 +1091,7 @@ compareTwoPhenoShiny = function(C3NAObj){
       ),
       tabPanel(
         ## First Panel
-        title = HTML("<b>Panel 1: Compare Two Conditions</b>"),
+        title = HTML("<b>Panel 1: Compare Two Phenotypes</b>"),
         value = "panel1",
         useShinyjs(),
         useShinydashboard(),
@@ -1518,9 +1518,9 @@ compareTwoPhenoShiny = function(C3NAObj){
                                                      levels = c("Phylum", "Class", "Order", "Family", "Genus", "Species"))
         nodeData_Disease = nodeData_Disease %>% arrange(`Taxonomic Levels`)
         diseaseData = data.frame(
-          labels = c(paste0(data1Name, " | nTaxa: ", sum(nodeData_Disease$n)), 
+          labels = c(paste0("<span style='font-size: 16'><b>", data1Name, " </b></span><br>nTaxa: ", sum(nodeData_Disease$n)), 
                      as.character(nodeData_Disease$`Taxonomic Levels`)),
-          parents = c("", rep(paste0(data1Name, " | nTaxa: ", sum(nodeData_Disease$n)), nrow(nodeData_Disease))),
+          parents = c("", rep(paste0("<span style='font-size: 16'><b>", data1Name, " </b></span><br>nTaxa: ", sum(nodeData_Disease$n)), nrow(nodeData_Disease))),
           values = c(0, nodeData_Disease$n),
           colors = c("#ccaf1d", "#0B701E", "#FF7300", "#120C94", "#db2545", "#009BB3", "#EBEBEB")
         )
@@ -1557,9 +1557,9 @@ compareTwoPhenoShiny = function(C3NAObj){
                                                      levels = c("Phylum", "Class", "Order", "Family", "Genus", "Species"))
         nodeData_Control = nodeData_Control %>% arrange(`Taxonomic Levels`)
         controlData = data.frame(
-          labels = c(paste0(data2Name, " | nTaxa: ", sum(nodeData_Control$n)), 
+          labels = c(paste0("<span style='font-size: 16'><b>", data2Name, " </b></span><br>nTaxa: ", sum(nodeData_Control$n)), 
                      as.character(nodeData_Control$`Taxonomic Levels`)),
-          parents = c("", rep(paste0(data2Name, " | nTaxa: ", sum(nodeData_Control$n)), nrow(nodeData_Control))),
+          parents = c("", rep(paste0("<span style='font-size: 16'><b>", data2Name, " </b></span><br>nTaxa: ", sum(nodeData_Control$n)), nrow(nodeData_Control))),
           values = c(0, nodeData_Control$n),
           colors = c("#ccaf1d", "#0B701E", "#FF7300", "#120C94", "#db2545", "#009BB3", "#EBEBEB")
         )
@@ -1725,24 +1725,50 @@ compareTwoPhenoShiny = function(C3NAObj){
       ###### . 2.3 Click Taxa ######
       output$clickedModuleInfo <- DT::renderDataTable({
         tmp <- event_data("plotly_click", priority = "event")
-        closestZSum = which.min(abs(modulePlotData_Wide$ZSummary-tmp$x))
-        matchedZSum = modulePlotData_Wide$ZSummary[closestZSum]
-        closestMedRank = which.min(abs(modulePlotData_Wide$medianRank-tmp$y))
-        matchedMedRank = modulePlotData_Wide$medianRank[closestMedRank]
-        tempMod = subset(modulePlotData_Wide, ZSummary == matchedZSum & medianRank == matchedMedRank)
-        if(nrow(tempMod)>0){
-          selectedColor = nodesAll %>%
-            filter(colors_Control == tempMod$color[1]) %>%
-            dplyr::select(TaxaName, colors_Disease, colors_Control) %>%
-            dplyr::rename("Comparison Color" = colors_Disease,
-                          "Reference Color" = colors_Control)
-          DT::datatable(selectedColor,
-                        options = list(
-                          rownames = FALSE,
-                          autoWidth = TRUE,
-                          searching = TRUE,
-                          pageLength = 7
-                        ))
+        if(is.numeric(tmp$x)){
+          closestZSum = which.min(abs(modulePlotData_Wide$ZSummary-tmp$x))
+          matchedZSum = modulePlotData_Wide$ZSummary[closestZSum]
+          closestMedRank = which.min(abs(modulePlotData_Wide$medianRank-tmp$y))
+          matchedMedRank = modulePlotData_Wide$medianRank[closestMedRank]
+          tempMod = subset(modulePlotData_Wide, ZSummary == matchedZSum & medianRank == matchedMedRank)
+        } else {
+          tempMod = data.frame()
+        }
+        ## Only react to Module Preservation plot
+        if("x" %in% colnames(tmp)){
+          if(nrow(tempMod)>0){
+            selectedColor = nodesAll %>%
+              filter(colors_Control == tempMod$color[1]) %>%
+              dplyr::select(TaxaName, colors_Disease, colors_Control) %>%
+              dplyr::rename("Comparison Color" = colors_Disease,
+                            "Reference Color" = colors_Control)
+            DT::datatable(selectedColor,
+                          options = list(
+                            rownames = FALSE,
+                            autoWidth = TRUE,
+                            searching = TRUE,
+                            pageLength = 7
+                          ))
+          } else {
+            placeholderData = data.frame(
+              "Instruction" = paste0("Please click on the Module in the \n", 
+                                     "'Module Preservation Statistics' plot\n to ", 
+                                     "display the members of the module, which is \n", 
+                                     "based on the modules from Phenotype: '", data2Name, 
+                                     "'. (Left Figure)")
+            )
+            rownames(placeholderData) = ""
+            datatable(
+              placeholderData,              
+              rownames = FALSE,
+              options = list(
+                dom = 't',
+                autoWidth = TRUE,
+                searching = FALSE,
+                pageLength = 1
+              )
+            )
+          }
         } else {
           placeholderData = data.frame(
             "Instruction" = paste0("Please click on the Module in the \n", 
@@ -1763,6 +1789,7 @@ compareTwoPhenoShiny = function(C3NAObj){
             )
           )
         }
+
       })
       
       ###### Section 3 Extract Specific Network ######
