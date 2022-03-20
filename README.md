@@ -8,7 +8,7 @@ Table of Contents
 2.  [Installation](#installation)
 3.  [Workflow](#workflow)
 4.  [Package Documents and Tutorials](#package-documents-and-tutorials)
-5.  [Shiny Demo](#shiny-dome)
+5.  [Shiny Demonstration](#shiny-domenstration)
 
 Description
 -----------
@@ -36,5 +36,15 @@ The package homepage contains tutorials and detailed guide for the C3NA pipeline
 
 Shiny Demonstration
 -------------------
+There are two interaction shiny applications: Module Evaluations and Compare Two Phenotypes
+
+## Module Evaluations Shiny 
+  <img src="man/figures/Shiny1PanelGuide.jpg" align="center"/>
+  <br>
+<span style="background-color: #4D4D4D; font-weight: bold">Block 1</span>
+
+
+## Compare Two Phenotypes Shiny 
+  <img src="man/figures/Shiny2PanelGuide.jpg" align="center"/>
 
 

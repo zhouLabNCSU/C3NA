@@ -51,7 +51,7 @@ jobs:
           install.packages("knitr")
           # BiocManger Install
           options("BioC_mirror"="https://ftp.gwdg.de/pub/misc/bioconductor")
-          BiocManager::install(c('phyloseq', 'qvalue', 'impute', 'GO.db'))
+          BiocManager::install(c('phyloseq', 'qvalue', 'impute', 'GO.db', 'preprocessCore'))
           remotes::install_github("zdk123/SpiecEasi", upgrade="never")
           remotes::install_github("vmikk/metagMisc", upgrade="never")
           remotes::install_cran("rcmdcheck")
