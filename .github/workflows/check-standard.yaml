@@ -18,9 +18,9 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - {os: macOS-latest,   r: '4.0'}
-          - {os: windows-latest, r: '4.0'}
-          - {os: ubuntu-latest,   r: '4.0'}
+          - {os: macOS-latest,   r: '4.1'}
+          - {os: windows-latest, r: '4.1'}
+          - {os: ubuntu-latest,   r: '4.1'}
 
     env:
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
@@ -54,7 +54,7 @@ jobs:
           # BiocManger Install
           options("BioC_mirror"="https://ftp.gwdg.de/pub/misc/bioconductor")
           
-          BiocManager::install(c('phyloseq', 'qvalue', 'impute', 'GO.db', 'preprocessCore', 'AnnotationDbi', 'Wrenchm, 'edgeR', 'metagenomeSeq', 'ANCOMBC', 'Maaslin2', 'ALDEx2'))
+          BiocManager::install(c('phyloseq', 'qvalue', 'impute', 'GO.db', 'preprocessCore', 'AnnotationDbi', 'Wrenchm', 'edgeR', 'metagenomeSeq', 'ANCOMBC', 'Maaslin2', 'ALDEx2'))
           # Try to install WGCNA, Maaslin2 & ALDEx2 again if failed, since they have dependncies from BiocManager packages
           if(!require("WGCNA", quietly = TRUE)){install.packages("WGCNA", dependencies = FALSE)}
           if(!require("Maaslin2", quietly = TRUE)){install.packages("Maaslin2", dependencies = FALSE)}
