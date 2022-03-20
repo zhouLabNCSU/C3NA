@@ -1242,7 +1242,7 @@ compareTwoPhenoShiny = function(C3NAObj){
             dropdown(
               uiOutput("taxaModularTaxaSelector"),
               circle = TRUE, status = "danger", 
-              icon = icon("filter"), width = "600px",
+              icon = icon("filter"), width = "300px",
               animate = animateOptions(
                 enter = shinyWidgets::animations$bouncing_entrances$bounceInRight,
                 exit = shinyWidgets::animations$bouncing_exits$bounceOutRight
@@ -1881,20 +1881,39 @@ compareTwoPhenoShiny = function(C3NAObj){
       })
           
       output$barPlotTaxaSelector <- renderUI({
-        pickerInput(
-          inputId = "barPlotTaxaSelector",
-          label = "Taxa Selector:", 
-          choices = c("All"), 
-          selected = "All"
-        )
+        if(is.null(values[["panel1SelectedIDs"]])){
+          pickerInput(
+            inputId = "barPlotTaxaSelector",
+            label = "Taxa Selector:", 
+            choices = c("All"), 
+            selected = "All"
+          )
+        } else {
+          matchIDs = values[["panel1SelectedIDs"]]
+          pickerInput(
+            inputId = "barPlotTaxaSelector",
+            label = "Taxa Selector:", 
+            choices = c("All", matchIDs), 
+            selected = "All"
+          )
+        }
       })
       
       output$taxaModularTaxaSelector <- renderUI({
-        pickerInput(
-          inputId = "taxaModularTaxaSelector",
-          label = "Taxa Selector:", 
-          choices = NULL
-        )
+        if(is.null(values[["panel1SelectedIDs"]])){
+          pickerInput(
+            inputId = "taxaModularTaxaSelector",
+            label = "Taxa Selector:", 
+            choices = NULL
+          )
+        } else {
+          matchIDs = values[["panel1SelectedIDs"]]
+          pickerInput(
+            inputId = "taxaModularTaxaSelector",
+            label = "Taxa Selector:", 
+            choices = matchIDs, selected = matchIDs[1]
+          )
+        }
       })
       
       ###### . 3.3 Bar Plot ######
@@ -1936,10 +1955,8 @@ compareTwoPhenoShiny = function(C3NAObj){
           } else {
             nodesAll_Pheno = nodesAll_PhenoOri
             matchedID = input$barPlotTaxaSelector
-            print(matchedID)
             matchedTaxonomicLevel = subset(nodesAll_Pheno, TaxaName == matchedID)$`Taxonomic Levels`
-            print(matchedTaxonomicLevel)
-            
+
             relatedTaxaName = subset(nodesAll_Pheno, TaxaName == matchedID)
             nodesAll_Pheno$`Taxonomic Levels` = ifelse(nodesAll_Pheno[, matchedTaxonomicLevel] == matchedID,
                                                        as.character(nodesAll_Pheno$`Taxonomic Levels`), "Unselected")
@@ -1953,8 +1970,7 @@ compareTwoPhenoShiny = function(C3NAObj){
               curPheno = "ClusterID_Control"
             }
             nodesAll_Pheno$`Cluster ID` = nodesAll_Pheno[, curPheno]
-            print(head(nodesAll_Pheno))
-            
+
             barPlotAll = 
               plot_ly(nodesAll_Pheno, 
                     x = ~`Cluster ID`,
@@ -2022,10 +2038,8 @@ compareTwoPhenoShiny = function(C3NAObj){
           
           if(!is.null(values[["panel1SelectedIDs"]])){
             if(input$nodesMode == "selectedTaxa"){
-              print("Single Taxa")
               relatedTaxa = values[["panel1SelectedIDs"]]
             } else if (input$nodesMode == "relatedTaxa"){
-              print("Related Taxa")
               corCut = curCorFilter
               matchedID = values[["panel1SelectedIDs"]]
               filteredData = subset(sparccP_Filtered_rbind, source %in% matchedID | target %in% matchedID) %>%
@@ -2040,7 +2054,6 @@ compareTwoPhenoShiny = function(C3NAObj){
                                      filteredData_Control$source, 
                                      filteredData_Control$target))
             } else {
-              print("All Taxa in Related Modules")
               matchedID = values[["panel1SelectedIDs"]]
               filteredData = subset(sparccP_Filtered_rbind, source %in% matchedID | target %in% matchedID) %>%
                 filter(cor >= corCut) %>% filter(Module != "Inter-Modular") 
@@ -2055,7 +2068,7 @@ compareTwoPhenoShiny = function(C3NAObj){
                                      filteredData_Control$source, 
                                      filteredData_Control$target))
             }
-            print("1")
+            
             if(input$nodesMode == "selectedTaxa"){
               sparccP_Filtered_Combined_Filtered = subset(sparccP_Filtered_Combined, source %in% relatedTaxa | target %in% relatedTaxa) %>% 
                 filter(cor_Disease >= corCut | cor_Control >= corCut) %>%
@@ -2070,7 +2083,6 @@ compareTwoPhenoShiny = function(C3NAObj){
                 filter(!(target %in% removedTaxaTable$removedTaxa)) 
             }
 
-            print("2")
             ## Calculate Edge and Nodes Table
             nodesTable = nodesAll %>%
               filter(TaxaName %in% relatedTaxa) %>%
@@ -2098,18 +2110,16 @@ compareTwoPhenoShiny = function(C3NAObj){
                 left_join(C3NAResults, 
                         by = "TaxaName", all.x = TRUE)
             }
-            print("3")
+
             ## Filter Vertices based on taxonomic levels
             nodesTable = nodesTable %>%
               rowwise() %>%
               mutate(taxaLvls_Abbre = substring(TaxaName, 1, 1)) %>%
               filter(taxaLvls_Abbre %in% curTaxaLvls) %>%
               group_by(TaxaName) %>% filter(row_number() == 1)
-            print("4")
-            ## Adding Differential Abundance Analysis Results if Avaliable
+            
+            ## Adding Differential Abundance Analysis Results if Available
             ###### !!!!!!DA  ######
-            print(input$DASelector)
-            print(length(daMethods))
             if(length(daMethods) > 1 & input$DASelector != "None"){
               daData_temp = daData[, c("TaxaName", input$DASelector)]
               colnames(daData_temp)[2] = "DA"
@@ -2129,18 +2139,15 @@ compareTwoPhenoShiny = function(C3NAObj){
                 shadow = c(FALSE, FALSE, FALSE)
               )
             } else {
-              print("Only Star")
               lnodes <- data.frame(
                 label = c("Selected", "Others"),
                 shape = c("star", "dot"),
                 shadow = c(FALSE, FALSE)
               )
             }
-            print("5")
+            
             ## C3NA Results
-            print("C3NA Results")
             if(!is.null(C3NAObj$C3NA_Wilcoxon)){
-              print("C3NA_Wilcoxon")
               nodesTable = nodesTable %>%
                 mutate(C3NA = ifelse(is.na(C3NA), FALSE, C3NA)) %>%
                 mutate(title = paste0(title, 
@@ -2157,11 +2164,10 @@ compareTwoPhenoShiny = function(C3NAObj){
               )
               lnodes = rbind(lnodesV2, lnodes)
             } else {
-              print("No C3NA")
               lnodes = lnodes %>%
                 filter(!(shape %in% c("triangle")))
             }
-            print("6")
+            
             ## Remove Duplicates Caused by inputTaxaName
             if("inputTaxaName" %in% colnames(nodesTable)){
               nodesTable = nodesTable %>%
@@ -2169,7 +2175,6 @@ compareTwoPhenoShiny = function(C3NAObj){
                 distinct()
             }
             
-            print("7")
             # Check if both C3NA & DA 
             if(!is.null(C3NAObj$C3NA_Wilcoxon) & (length(daMethods) > 1 & input$DASelector != "None")){
               nodesTable = nodesTable %>%
@@ -2192,7 +2197,6 @@ compareTwoPhenoShiny = function(C3NAObj){
               font.align = "top"
             )
             
-            print("8")
             # Edge
             edgesTable = sparccP_Filtered_Combined_Filtered %>%
               filter(cor_Disease >= corCut | cor_Control >= corCut) %>%
@@ -2230,7 +2234,7 @@ compareTwoPhenoShiny = function(C3NAObj){
                                     "Control Module: ", Module_Control)) %>%
               left_join(samePhyloTable, by = "taxaComboName", all.x = TRUE) %>%
               mutate(samePhylo = ifelse(is.na(samePhylo), FALSE, samePhylo))
-            print(dim(edgesTable))
+            
             save(edgesTable, nodesTable,
                  file = "../tempEdgeTable.rdata")
             
@@ -2261,16 +2265,12 @@ compareTwoPhenoShiny = function(C3NAObj){
                   filter(TaxaName %in% unique(unlist(edgesTable[, c("source", "target")])))
               }
             }
-            print(dim(edgesTable))
-
-            print("9")
+            
             if(cursamePhylo == "Remove"){
               edgesTable$samePhyloV2 = ifelse(is.na(edgesTable$samePhylo), FALSE, TRUE)
               edgesTable = edgesTable %>% dplyr::filter(samePhyloV2 != TRUE)
             }
             values[["nodesTable"]] = nodesTable
-            
-            print("10")
             
             networkPlot = 
               visNetwork(nodes = nodesTable, edges = edgesTable
@@ -2324,7 +2324,7 @@ compareTwoPhenoShiny = function(C3NAObj){
                                               "<b>Count: </b>", combinedCountTable$count, "<br>")
 
         output$countDistributionPlot <- renderPlotly({
-          singleTaxonPlot = 
+          singleTaxonPlot = suppressWarnings(
             plot_ly(data = combinedCountTable, 
                     x = ~condition, 
                     y = ~log(count), 
@@ -2347,9 +2347,9 @@ compareTwoPhenoShiny = function(C3NAObj){
                 yaxis = list(title="<b>Log<sub>2</sub>-Transformed Count</b>"),
                 title = paste0(selectedTaxaLvl, " | ", selectedTaxaNameFull)
               )
-          
+          )
           plots_Plotly[["singleTaxonPlot"]] <- singleTaxonPlot
-          singleTaxonPlot
+          suppressWarnings(singleTaxonPlot)
         })
 
         
@@ -2357,7 +2357,6 @@ compareTwoPhenoShiny = function(C3NAObj){
           values[["click1"]] = selectedTaxaName
         } else if (!is.null(values[["click1"]]) & is.null(values[["click2"]])){
           if(selectedTaxaName != values[["click1"]]){
-            print("Update second Taxon")
             values[["click2"]] = selectedTaxaName
           }
         } else if (!is.null(values[["click1"]]) & !is.null(values[["click2"]])){
@@ -2466,20 +2465,20 @@ compareTwoPhenoShiny = function(C3NAObj){
                   showlegend = showLegend[i]
                 )
             }
-            fig <- layout(
+            fig <- suppressWarnings(layout(
               fig,
               xaxis = list(title="<b>Condition</b>"),
               yaxis = list(title="<b>Log<sub>2</sub>-Transformed Count</b>"),
-              violingap = 0,
-              violingroupgap = 0,
-              violinmode = 'overlay',
+              # violingap = 0,
+              # violingroupgap = 0,
+              # violinmode = 'overlay',
               legend = list(
                 tracegroupgap = 0
               )
-            )
+            ))
             
             plots_Plotly[["twoTaxaPlot"]] <- fig
-            fig
+            suppressWarnings(fig)
           })
         }
       })

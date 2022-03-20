@@ -24,5 +24,17 @@ utils::globalVariables(c(
   "Full Taxa Name", "Taxonomic Levels", "."
 ))
 
-
+#' Correlation and Consensus-Based Cross-Taxonmony Network Analysis
+#'
+#' Correlation and Consensus-based Cross-taxonomy Network Analysis (C3NA) is a 
+#' user-friendly tool for investigating compositional microbial sequencing data 
+#' to identify and compare co-occurrence patterns across different taxonomic 
+#' levels between two phenotypes. 
+#'
+#' @import methods
+#' @name C3NA-package
+#' @author Kuncheng Song 
+#' @docType package
+#' @keywords package
+NA
 

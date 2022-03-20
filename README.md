@@ -1,4 +1,4 @@
-Correlation and Consensus-based Cross-taxonomy Network Analysis (C3NA) <a href='https://github.com/zhouLabNCSU/C3NA/'><img src = "./man/figures/RPackageLogo.jpg" align="right" width = "120" height = "100%"/></a>
+Correlation and Consensus-based Cross-taxonomy Network Analysis (C3NA) <a href='https://github.com/zhouLabNCSU/C3NA/'><img src = "./man/figures/RPackageLogo.png" align="right" width = "120" height = "100%"/></a>
 ==
 <!-- badges: start -->
 [![R-CMD-check (R V4.1)](https://github.com/zhouLabNCSU/C3NA/actions/workflows/check-standard.yaml/badge.svg)](https://github.com/zhouLabNCSU/C3NA/actions/workflows/check-standard.yaml)
@@ -27,7 +27,7 @@ Installation
 # devtools::install_github("zhouLabNCSU/C3NA")
 # library(C3NA)
 ```
-Please note due to many dependencies required for the C3NA, particularly the shiny elements to function properly, please visit the [Get started](https://zhoulabncsu.github.io/C3NA/articles/C3NA.html) to install the dependencies before install the C3NA package. 
+Please note due to many dependencies required for the C3NA, particularly the shiny elements to function properly, please visit the [Get started](https://zhoulabncsu.github.io/C3NA/articles/C3NA.html) to install the dependencies before install the C3NA package. *C3NA has been tested using the GitHub workflow using the up-to-date macOS, windows and Ubuntu using R version 4.1.* 
 
 Workflow
 --------

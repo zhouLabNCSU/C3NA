@@ -29,6 +29,7 @@ validatePhloseq <- function(phyloseqObj = phyloseqObj,
     stop(paste0("The object is not a phyloseq object, please correctly import the ",
                 "OTUs/ASVs table, taxa table and sample data as phyloseq obejcts."))
   }
+  # Check Diagnosis Column
   if(!("diagnosis" %in% colnames(sample_data(phyloseqObj))) & is.na(diagColName)){
     stop(paste0("The diagnosis column is missing in from the sample_data() of the ",
                 "phyloseq object. You can provide the correct phenotype column ",
@@ -39,6 +40,15 @@ validatePhloseq <- function(phyloseqObj = phyloseqObj,
     } else {
       stop(paste0("The provided diagnosis column is not in the phyloseq object."))
     }
+  }
+  # Check the present of all required taxonomic levels in the tax_table of the phyloseq object
+  taxaLvls = c("Phylum", "Class", "Order", "Family", "Genus", "Species")
+  if(!(all(taxaLvls %in% colnames(tax_table(phyloseqObj))))){
+    stop(paste0("For C3NA processing, you need 'Phylum', 'Class', 'Order' 'Family', 'Genus', 'Species' ",
+                "present in the tax_table of the phyloseq object. If your data has no resolution on lower ",
+                "taxonomic level, e.g. no species level assignments. You can create a dummy column of 's_NA' ",
+                "under 'Species' column to continue with the C3NA pipeline. This will not affect your final ",
+                "results as biologically uninferrable taxa are removed from display. "))
   }
   return(phyloseqObj)
 } 

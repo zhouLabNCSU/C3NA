@@ -1,6 +1,6 @@
 Package: C3NA
 Type: Package
-Title: Correlation and Consensus Based Network Analysis (C3NA)
+Title: Correlation and Consensus-Based Cross-Taxonomy Network Analysis (C3NA)
 Description: The correlation and consensus-based cross-taxonomy network analysis 
   (C3NA) is an R package for analyzing compositional microbial data, particularly 
   the 16S rRNA amplicon sequencing data. The C3NA package contains tools to facilitate 
