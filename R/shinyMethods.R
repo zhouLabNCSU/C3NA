@@ -135,7 +135,7 @@ moduleEvals = function(C3NAObj = C3NAObj, colorSeed = 9){
         fluidRow(
           box(
             width = 6,
-            title = HTML("Select the Unique Patterns from Differnt Minimal Number of Members per Cluster", "<font size='3'>", 
+            title = HTML("Select the Unique Patterns from Differnt Minimal Number of Taxa per Module", "<font size='3'>", 
                          as.character(actionLink(inputId = "MS_UniquePatternSelector", 
                                                  label = "", 
                                                  icon = icon("question-circle"))), "</font>"), 
@@ -203,7 +203,7 @@ moduleEvals = function(C3NAObj = C3NAObj, colorSeed = 9){
                            as.character(actionLink(inputId = "MS_ConsensusEval", 
                                                    label = "", 
                                                    icon = icon("question-circle"))), "</font>"), 
-              status = "warning",
+              status = "info",
               solidHeader = TRUE, 
               tabBox(
                 title = "", 
@@ -304,7 +304,7 @@ moduleEvals = function(C3NAObj = C3NAObj, colorSeed = 9){
         output$patternSelector <- renderUI({
           awesomeCheckboxGroup(
             inputId = "patternSelector",
-            label = "Selected # Taxa per Module Patterns", 
+            label = "Default selection includes all unique patterns with ≥ ten unique modules", 
             choices = formatC(C3NAObj$misc$minModuleSize:C3NAObj$misc$maxModuleSize,flag=0,width=2), 
             selected = formatC(moduleCheckRemoveDup,flag=0,width=2),
             inline = TRUE, 
@@ -545,7 +545,7 @@ moduleEvals = function(C3NAObj = C3NAObj, colorSeed = 9){
               minClust = values[["selectedMinClust"]]
               curHclust = values[["curHclust"]]
               consensusMatrix_Final_wide = values[["consensusMatrix_Final_wide"]]
-              print("Plotting Consensus Matrix")
+
               # Obtain the clustering information for the taxa
               curTree = cutree(as.hclust(curHclust), k = minClust)
               ## Generate Pheatmap
@@ -652,9 +652,9 @@ moduleEvals = function(C3NAObj = C3NAObj, colorSeed = 9){
                                                  fontsize_col = 4, fontsize_row = 4,
                                                  gaps_row = rowIndices,gaps_col = rowIndices,
                                                  cluster_rows = FALSE, cluster_cols = FALSE)
-              incProgress(1/n, detail = paste("Part", 3, "Saving..."))
               plots[["consensusPlot"]] = consensusPlot
               consensusPlot
+              incProgress(1/n, detail = paste("Part", 3, "Saving..."))
             }
           })
         })
@@ -789,9 +789,9 @@ moduleEvals = function(C3NAObj = C3NAObj, colorSeed = 9){
                                                    fontsize_col = 4, fontsize_row = 4,
                                                    gaps_row = rowIndices,gaps_col = rowIndices,
                                                    cluster_rows = FALSE, cluster_cols = FALSE)
-              incProgress(1/n, detail = paste("Part", 3, "Saving..."))
               plots[["correlationPlot"]] = correlationPlot
               correlationPlot
+              incProgress(1/n, detail = paste("Part", 3, "Saving..."))
             }
           })
         })
@@ -890,7 +890,7 @@ easyClose = TRUE
             title = HTML('<b>Selection of Unique Patterns that will be included in Consensus Clustering</b>'),
             HTML("
 The unique pattern selector enables you to manually adjust which patterns will be included to generate the consensus matrix. 
-The optimal last pattern is generally around when the number of unique patterns drops to 10, with more<p style='background-color:gray;display:inline;color:white;'> prevalent duplicated patterns (darkened bar) </p>compared to patterns with more unique modules. 
+The optimal last pattern is generally around when the number of unique patterns drops to 10, with more <p style='background-color:gray;display:inline;color:white;'>prevalent duplicated patterns (darkened bar)</p> compared to patterns with more unique modules. 
 Please check the supplement results from our publication for a more detailed investigation of the impact of different selected patterns.               "),
 easyClose = TRUE
           )
