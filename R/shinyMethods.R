@@ -69,7 +69,8 @@ moduleEvals = function(C3NAObj = C3NAObj, colorSeed = 9){
   
   shinyApp(
     ui = navbarPage(
-      title = "C3NA",
+      title = "C3NA", 
+      # theme = bs_theme
       tags$head(
         tags$style(
           HTML(
@@ -1185,7 +1186,7 @@ compareTwoPhenoShiny = function(C3NAObj){
         #####  Section 3 Taxa Specific investigation #####
         tags$div(class = "Banner", 
                  tags$div(class = "myHeader", id = "infoPanel1Sec1",
-                          (HTML("Section 3: Network Selector")
+                          (HTML("Section 3: Network Plots")
                           )
                  )
         ),

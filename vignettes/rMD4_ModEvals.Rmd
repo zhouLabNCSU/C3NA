@@ -1,0 +1,25 @@
+---
+title: "Tutorial on Using Module Evaluation Shiny"
+author: "Kuncheng Song"
+date: "3/18/2022"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Tutorial on Using Module Evaluation Shiny}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+  \usepackage[utf8]{inputenc}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Section 1: Module Patterns
+
+## Section 2: User Selector
+
+## Section 3: Diagnosis Plots
+

@@ -1,0 +1,26 @@
+---
+title: "Tutorials on Using Compare Phenotypes Shiny"
+author: "Kuncheng Song"
+date: "3/18/2022"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Tutorials on Using Compare Phenotypes Shiny}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+  \usepackage[utf8]{inputenc}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+
+## Section 1: Dataset Information
+
+## Section 2: Preservation Statistics
+
+## Section 3: Network Plots
+
