@@ -47,7 +47,9 @@ jobs:
       - name: Install R dependencies
         run: |
           install.packages(c("remotes","BiocManager"))
-          # set Bioc mirror
+          # Install Knitr
+          install.packages("knitr")
+          # BiocManger Install
           options("BioC_mirror"="https://ftp.gwdg.de/pub/misc/bioconductor")
           BiocManager::install(c('phyloseq', 'qvalue', 'impute'))
           remotes::install_github("zdk123/SpiecEasi", upgrade="never")
