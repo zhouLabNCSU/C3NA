@@ -187,7 +187,7 @@ addDAResults <- function(twoPhenoC3NAObj = twoPhenoC3NAObj,
   logicalCols = unlist(lapply(DAResults, is.logical))
   DAResults = DAResults[, c("TaxaName", colnames(DAResults)[logicalCols])]
   DATaxa = DAResults$TaxaName
-  C3NATaxa = cancer__dada2__Cancer__Normal$nodes$nodesAll$TaxaName
+  C3NATaxa = twoPhenoC3NAObj$nodes$nodesAll$TaxaName
   
   if(verbose){
     print(paste0("Differential Abundance Merge Results: "))
