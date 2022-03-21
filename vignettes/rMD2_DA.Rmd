@@ -194,7 +194,8 @@ CancerVsNormal_C3NA = comparePhenotypes(C3NAObj_Comparison =  Cancer_C3NA,
                                         C3NAObj_Reference = Normal_C3NA,
                                         corCutoff = 0.2, fdr = 0.05, unusefulTaxa = NA, 
                                         nBootstrap = 100, verbose = FALSE)
-CancerVsNormal_C3NA$DA = DASummaryTable
+CancerVsNormal_C3NA = addDAResults(twoPhenoC3NAObj = CancerVsNormal_C3NA, 
+                                   DAResults = DASummaryTable)
 ```
 
 

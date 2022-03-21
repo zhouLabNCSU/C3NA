@@ -29,7 +29,7 @@ Imports: stringr, tibble, dplyr, readr, stats, visNetwork, igraph, scales,
   magrittr, tidyr, randomcoloR, ggpubr, ggplot2, qvalue, plotly, colorspace,
   phyloseq, reshape2, SpiecEasi, metagMisc, shiny, shinyWidgets, shinydashboard,
   shinyjs, reactable, DT, pheatmap, dynamicTreeCut, cluster, WGCNA,
-  RColorBrewer, base64enc, htmlwidgets, impute, foreach, methods
+  RColorBrewer, base64enc, htmlwidgets, impute, foreach
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2

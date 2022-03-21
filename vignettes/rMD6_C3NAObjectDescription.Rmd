@@ -1,0 +1,24 @@
+---
+title: "C3NA Objects and Description"
+author: "Kuncheng Song"
+date: "3/20/2022"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{C3NA Objects and Description}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+  \usepackage[utf8]{inputenc}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r, echo = FALSE, out.width="1800px"}
+knitr::include_graphics("../man/figures/RObjectDetails.png")
+```
+
+*You can right-click on the image to select 'open image on new tab' to view full resolution of the image*

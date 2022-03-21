@@ -116,7 +116,8 @@ Please Visit the Differenital Abundance Guide under **Articles** for full tutori
 githubURL <- ("https://github.com/zhouLabNCSU/C3NA_ScriptsAndData/raw/main/RPackageTutorialData/Post-initiateC3NA/DA_CancerVsNormal_DADA2_Results.rds")
 CancerVsNormal_DA  <- readRDS(url(githubURL, method="libcurl"))
 ## Adding the DA method to the two phenotypes comparison C3NA
-CancerVsNormal_C3NA$DA = CancerVsNormal_DA
+CancerVsNormal_C3NA = addDAResults(twoPhenoC3NAObj = CancerVsNormal_C3NA, 
+                                   DAResults = CancerVsNormal_DA)
 ```
 
 ## Step 7. Shiny Investigation of the Results

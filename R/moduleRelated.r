@@ -201,41 +201,6 @@ initiateC3NA <- function(phyloseqObj = phyloseqObj,
   return(corMatrix)
 }
 
-# updateModuleRange <- function(C3NAObj = C3NAObj,
-#                               minModuleSize = 3, maxModuleSize = 40){
-#   # Get the parameter
-#   signedNetwork = 
-#   
-#   # Calculate the Modular Data Based on Minimal Cluster Size
-#   module_df <- data.frame(
-#     taxaID = NULL, colors = NULL,
-#     minSize = NULL, dataset = NULL
-#   )
-#   for(minSize in (minModuleSize:maxModuleSize)){
-#     consTree = hclust(as.dist(1-signedNetwork), method = "complete");
-#     # Module identification using dynamic tree cut:
-#     unmergedLabels = dynamicTreeCut::cutreeDynamic(dendro = consTree, 
-#                                                    distM = 1-signedNetwork,
-#                                                    deepSplit = 2, 
-#                                                    cutHeight = 0.995,
-#                                                    minClusterSize = minSize,
-#                                                    pamRespectsDendro = FALSE, verbose = FALSE);
-#     unmergedColors = WGCNA::labels2colors(unmergedLabels)
-#     module_df_temp <- data.frame(
-#       taxaID = consTree$labels,
-#       colors = unmergedColors,
-#       minSize = minSize,
-#       phenotype = phenotype
-#     )
-#     module_df = rbind(module_df, module_df_temp)   
-#   }
-#   
-#   # Return
-#   C3NAObj[["moduleData"]] = module_df
-#   return(returnlist)
-# }
-
-
 #' Obtain the Module Information from Consensus-Based Investigation
 #' 
 #' @description Extract the module information based on the consensus results. 
@@ -801,12 +766,11 @@ comparePhenotypes <- function(C3NAObj_Comparison = C3NAObj1,
     moduleSize = moduleSizes,
     controlType = curControlPhenotype
   )
-  modulePlotData_Wide$nonPreserved = ifelse((modulePlotData_Wide$ZSummary < 5 & modulePlotData_Wide$medianRank >=8), 
+  modulePlotData_Wide$nonPreserved = ifelse((modulePlotData_Wide$ZSummary < 5 & 
+                                               modulePlotData_Wide$medianRank >=8), 
                                             TRUE, FALSE)
   setTxtProgressBar(pb, 7)
   C3NAObj = list()
-  # C3NAObj[["curDisease_SparccP_Intra"]] = curDisease_SparccP_Filtered
-  # C3NAObj[["curControl_SparccP_Intra"]] = curControl_SparccP_Filtered
   C3NAObj[["curDisease_TaxaTable"]] = diseaseTaxaTable
   C3NAObj[["curControl_TaxaTable"]] = controlTaxaTable
   C3NAObj[["curDisease_OriCountTable"]] = C3NAObj_Comparison$filteredCountMatrix

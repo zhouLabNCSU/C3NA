@@ -159,7 +159,50 @@ extractResults <- function(twoPhenoC3NAObj = twoPhenoC3NAObj){
   return(returnData)
 }
 
-
+#' Adding Differential Abundancce Results to C3NA Object
+#'
+#' @description Adding the DA results (run separately from C3NA required pipeline) to 
+#' C3NA objects.  
+#' 
+#' @param twoPhenoC3NAObj (Required) C3NA objects after running comparePhenotypes()
+#' @param DAResults (Required) Differential abundance results, should have a 'TaxaName' column 
+#' with any number of DA methods results. To ensure the data are selected correctly, only the 
+#' logical (TRUE/FALSE) columns will be included. Please ensure the columns are reflect the correct
+#' type. 
+#' @param verbose (Optional) If TRUE, the function will display how many number of taxa that 
+#' shared or unique from the DA and C3NA pipeline. 
+#' 
+#' @export
+#' 
+addDAResults <- function(twoPhenoC3NAObj = twoPhenoC3NAObj,
+                         DAResults = NULL, verbose = TRUE){
+  if(is.null(DAResults)){
+    stop(paste0("Please select a DA result data frame to add to twoPhenoC3NA Objects. "))
+  }
+  if(!("TaxaName" %in% colnames(DAResults))){
+    stop(paste0("Please make sure your DA results has a column named 'TaxaName' which should ",
+                "matches the taxa names from C3NA pipeline"))
+  }
+  ## Reorder and extrac only the logical results
+  logicalCols = unlist(lapply(DAResults, is.logical))
+  DAResults = DAResults[, c("TaxaName", colnames(DAResults)[logicalCols])]
+  DATaxa = DAResults$TaxaName
+  C3NATaxa = cancer__dada2__Cancer__Normal$nodes$nodesAll$TaxaName
+  
+  if(verbose){
+    print(paste0("Differential Abundance Merge Results: "))
+    print(paste0("Number of DA Methods found: ", length(colnames(DAResults)[logicalCols]),
+                 "which includes: "))
+    print(colnames(DAResults)[logicalCols])
+    print(paste0("# Intersect Taxa: ", length(intersect(DATaxa, C3NATaxa))))
+    print(paste0("# DA Unique Taxa: ", length(setdiff(DATaxa, C3NATaxa))))
+    print(paste0("# C3NA Unique Taxa: ", length(setdiff(C3NATaxa, DATaxa))))
+  }
+  
+  ## Add to the C3NA
+  twoPhenoC3NAObj$DA = DAResults
+  return(twoPhenoC3NAObj)
+}
 
 
 

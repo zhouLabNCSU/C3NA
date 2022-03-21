@@ -12,6 +12,7 @@ reference:
     - getOptMods
     - comparePhenotypes
     - getInfluentialTaxa
+    - addDAResults
     - extractResults
 
   - title: Shiny Applications
@@ -23,4 +24,3 @@ reference:
     contents:
     - CRC_Phyloseq
     - C3NAPackageCheck
-    - C3NA-package
