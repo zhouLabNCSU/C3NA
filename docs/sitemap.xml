@@ -25,6 +25,9 @@
     <loc>/articles/rMD5_ComparePhenotypes.html</loc>
   </url>
   <url>
+    <loc>/articles/rMD6_C3NAObjectDescription.html</loc>
+  </url>
+  <url>
     <loc>/authors.html</loc>
   </url>
   <url>
@@ -35,6 +38,9 @@
   </url>
   <url>
     <loc>/news/index.html</loc>
+  </url>
+  <url>
+    <loc>/reference/addDAResults.html</loc>
   </url>
   <url>
     <loc>/reference/C3NA-package.html</loc>
