@@ -2235,9 +2235,6 @@ compareTwoPhenoShiny = function(C3NAObj){
               left_join(samePhyloTable, by = "taxaComboName", all.x = TRUE) %>%
               mutate(samePhylo = ifelse(is.na(samePhylo), FALSE, samePhylo))
             
-            save(edgesTable, nodesTable,
-                 file = "../tempEdgeTable.rdata")
-            
             ## Re-format based on Current mode
             if(length(curCorMode) < 3){
               if(!("diseaseOnly" %in% curCorMode)){

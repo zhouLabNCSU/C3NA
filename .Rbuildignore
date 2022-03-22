@@ -7,3 +7,5 @@
 ^\./permutedStats-actualModules\.RData$
 ^\./man/figures$
 ^\.github$
+^\./docs$
+^\./C3NA\.Rcheck$

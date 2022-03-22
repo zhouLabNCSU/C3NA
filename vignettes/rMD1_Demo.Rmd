@@ -96,7 +96,7 @@ Normal_C3NA = getOptMods(C3NAObj = Normal_C3NA,
 ## Step 4. Compare two phenotypes
 This steps will include the module preservation analysis. 
 ```{r, message=FALSE, error=FALSE, results="hide"}
-CancerVsNormal_C3NA = comparePhenotypes(C3NAObj_Comparison =  Cancer_C3NA, 
+CancerVsNormal_C3NA = comparePhenotypes(C3NAObj_Comparison =Cancer_C3NA, 
                                         C3NAObj_Reference = Normal_C3NA,
                                         corCutoff = 0.2, fdr = 0.05, unusefulTaxa = NA, 
                                         nBootstrap = 300, verbose = FALSE)
@@ -114,7 +114,8 @@ Please Visit the Differenital Abundance Guide under **Articles** for full tutori
 ```{r}
 ## Extract the Pre-calculated DA Analysis
 githubURL <- ("https://github.com/zhouLabNCSU/C3NA_ScriptsAndData/raw/main/RPackageTutorialData/Post-initiateC3NA/DA_CancerVsNormal_DADA2_Results.rds")
-CancerVsNormal_DA  <- readRDS(url(githubURL, method="libcurl"))
+CancerVsNormal_DA  <- readRDS(url(githubURL, 
+                                  method="libcurl"))
 ## Adding the DA method to the two phenotypes comparison C3NA
 CancerVsNormal_C3NA = addDAResults(twoPhenoC3NAObj = CancerVsNormal_C3NA, 
                                    DAResults = CancerVsNormal_DA)
