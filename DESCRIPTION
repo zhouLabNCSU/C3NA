@@ -9,7 +9,7 @@ Description: The correlation and consensus-based cross-taxonomy network analysis
 Version: 1.0.0
 Date: 2022-02-12
 Author: Kuncheng Song
-Authors@R:  c(
+Authors@R: c(
     person("Kuncheng", "Song", 
            email = "ksong4@ncsu.edu",   
            role = c("aut", "cre"),
@@ -32,7 +32,7 @@ Imports: stringr, tibble, dplyr, readr, stats, visNetwork, igraph, scales,
   RColorBrewer, base64enc, htmlwidgets, impute, foreach
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.1
 Collate:
     'global.r'
     'miscFunctions.r'

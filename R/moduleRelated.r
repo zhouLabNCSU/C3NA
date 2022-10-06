@@ -195,6 +195,258 @@ initiateC3NA <- function(phyloseqObj = phyloseqObj,
   return(returnlist)
 }
 
+
+#' Incoporate the C3NA object with Different Correlation Methods
+#' 
+#' @description Generate the initiate C3NA object, including the count matrix, the taxonomic table, and the multi-taxa stacked count matrix for the C3NA analysis. This step also includes the sparcc correlation calculation. Note: sparcc correlation can be extremely computationally expensive. The results will be summarized along with the signed network calcualted from the topology overlap matrix. Finally, different clusters of taxa will be calculated based on a minimal module size range from 3 to 40 (default). 
+#' 
+#' @param corMatrix (Required) Symmetric correlation matrix, required column and rownames to be in the format of taxonomic name and level, e.g. "p_bacterialName".  
+#' @param phyloseqObj (Required) Phyloseq \linkS4class{phyloseq} object. This should first undergo validatePhyloseq to ensure the diagnosis column are present.  
+#' @param phenotype (Required) The desired phenotype that present under the diagnosis column in the metadata from phyloseqObj
+#' @param prevTrh (Required) Prevalence threshold of the samples, which is a number between 0 and 1. E.g., the default 0.1 represents 10% of the samples need to have given taxa. 
+#' @param nBootstrap (Required) Number of bootstrap for the sparcc command. Warning: this is a very computational step. 
+#' @param nMinTotalCount (Required) The Minimal number of reads per sample. Default: 1,000.
+#' @param nCPUs (Optional) Parallel computation for the sparccboot function. Default: 1. 
+#' @param minModuleSize (Optional) The lowest number for the minimal size for each cluster. Default: 3. 
+#' @param maxModuleSize (Optional) The highest number for the minimal size for each cluster. Default: 40. 
+#' @param seed (Optional)
+#' 
+#' @importFrom magrittr %>%
+#' @importFrom dynamicTreeCut cutreeDynamic 
+#' @importFrom phyloseq prune_samples tax_table otu_table sample_data phyloseq subset_samples sample_sums tax_glom taxa_are_rows taxa_sums taxa_are_rows<-
+#' @importFrom WGCNA TOMsimilarity labels2colors 
+#' @importFrom dplyr mutate group_by summarise_if distinct filter rename left_join summarise n arrange ungroup pull row_number select across
+#' @importFrom tibble column_to_rownames 
+#' @importFrom tidyr pivot_longer pivot_wider
+#' @importFrom reshape2 melt
+#' @importFrom metagMisc phyloseq_filter_prevalence
+#' @importFrom SpiecEasi sparccboot pval.sparccboot
+#' @importFrom stats na.omit p.adjust cutree as.hclust hclust as.dist 
+#' @importFrom randomcoloR distinctColorPalette
+#' @importFrom cluster silhouette agnes 
+#' @importFrom utils txtProgressBar setTxtProgressBar
+#' @return A list object of C3NA Objects
+#' @export
+#' @examples
+#' data(CRC_Phyloseq)
+#' curPhyloseq = validatePhloseq(phyloseqObj = CRC_Phyloseq)
+#' 
+#' # These steps are commented out due to time consuming step. The post sparcc correlation data will be 
+#' # to avoid the step
+#' phyloseq_Cancer = phyloseq::subset_samples(physeq = CRC_Phyloseq, diagnosis == "Cancer")
+#' stackedTaxaMatrix = getStackedTaxaMatrix(phyloseqObj = phyloseq_Cancer, phenotype = "Cancer")
+#' 
+#' # Correlation method
+#' testCorMatrix = cor(t(stackedTaxaMatrix))
+#' # C3NAObj_Normal = initiateC3NA_DiffCorr(corMatrix = testCorMatrix,
+#' #                                        phyloseqObj = phyloseq_Cancer, 
+#' #                                        nMinTotalCount = 1000, phenotype = "Cancer" 
+#' #                                        )
+#' 
+initiateC3NA_DiffCorr <- function(corMatrix = corMatrix,  
+                                  prevTrh = 0.1, 
+                                  phyloseqObj = phyloseqObj,
+                                  nCPUs = "None", nBootstrap = "None",
+                                  nMinTotalCount = 1000, phenotype = NA,
+                                  minModuleSize = 3, maxModuleSize = 40,
+                                  seed = "None"){
+  # Text Bar
+  pb = txtProgressBar(min = 0, max = 4, initial = 0, style = 3)
+  
+  # Misc Variables
+  taxaLvls <- c("Phylum", "Class", "Order", "Family", "Genus", "Species")
+  taxaHeaders <- c("p", "c", "o", "f", "g", "s")
+  
+  # Error Checking
+  if(!isSymmetric(corMatrix)){stop("Please provide a symmetric correlation matrix")}
+  if(is.na(phenotype)){stop("Please provide a phenotype name.")} 
+  if(!class(phyloseqObj) == "phyloseq"){
+    stop(paste0("The object is not a phyloseq object, please correctly import the ",
+                "OTUs/ASVs table, taxa table and sample data as phyloseq obejcts."))}
+  
+  # Filter out low OTUs count samples, default > 1000
+  phyloseqObj = phyloseq::prune_samples(phyloseq::sample_sums(phyloseqObj)>=nMinTotalCount, phyloseqObj)
+  
+  setTxtProgressBar(pb, 1)
+  # Extract Info from Phyloseq Object
+  tempTaxa = as.data.frame(as.matrix(tax_table(phyloseqObj)))
+  tempTaxa$OTUs = rownames(otu_table(phyloseqObj))
+  curTaxaTable <- as.data.frame(as.matrix(tax_table(phyloseqObj)))
+  for(t in seq_along(taxaLvls)){
+    curLevel = taxaLvls[t]
+    psTempOri = tax_glom(phyloseqObj, curLevel, NArm = FALSE)
+    psTemp = phyloseq_filter_prevalence(psTempOri, 
+                                        prev.trh = prevTrh, abund.trh = NULL,
+                                        threshold_condition = "AND", abund.type = "total")
+    curOTUs = as.data.frame(as.matrix(otu_table(psTemp)))
+    curOTUs$TEMP = as.character(as.data.frame(as.matrix(tax_table(psTemp)))[, curLevel])
+    curOTUs <- curOTUs %>%
+      mutate(TEMP = ifelse(is.na(TEMP), "NA", TEMP)) %>%
+      group_by(TEMP) %>%
+      summarise_if(is.numeric, sum) %>%
+      column_to_rownames("TEMP")
+    
+    # Replace NAs and Remove Useless Taxa
+    curOTUs[is.na(curOTUs)] <- 0
+    curOTUs <- curOTUs[rowSums(curOTUs)>0, ]
+    
+    if(t == 1){
+      # OTUs Table
+      rownames(curOTUs) = paste0(taxaHeaders[t], "_", rownames(curOTUs))
+      rawCountMatrix = curOTUs
+      # Accessory Information
+      accInfoTable = data.frame(nTotalDisease = ncol(curOTUs),
+                                nNonZeroDisease = rowSums(curOTUs != 0),
+                                nCurRowSumsDisease = rowSums(curOTUs),
+                                oriNTaxa = dim(otu_table(psTempOri))[1],
+                                filteredNTaxa = dim(curOTUs)[1],
+                                nFullRowSums = rowSums(curOTUs))
+    } else{
+      rownames(curOTUs) = paste0(taxaHeaders[t], "_", rownames(curOTUs))
+      rawCountMatrix = rbind(rawCountMatrix, curOTUs)
+      accInfoTable_temp = data.frame(nTotalDisease = ncol(curOTUs),
+                                     nNonZeroDisease = rowSums(curOTUs != 0),
+                                     nCurRowSumsDisease = rowSums(curOTUs),
+                                     oriNTaxa = dim(otu_table(psTempOri))[1],
+                                     filteredNTaxa = dim(curOTUs)[1],
+                                     nFullRowSums = rowSums(curOTUs))
+      accInfoTable = rbind(accInfoTable, accInfoTable_temp)
+    }
+  }
+  
+  setTxtProgressBar(pb, 2)
+  corTable = corMatrix %>% .getUpperTri() %>%
+    reshape2::melt() %>% na.omit() %>% mutate(Var1 = as.character(Var1), 
+                                              Var2 = as.character(Var2)) %>%
+    
+    rename(cor = value, from = Var1, to = Var2) %>% rowwise() %>%
+    mutate(source = sort(c(from, to))[1], target = sort(c(from, to))[2]) %>%
+    mutate(taxaComboName = paste0(source, "__", target))
+  
+  # Signed TOM Similairty 
+  setTxtProgressBar(pb, 3)
+  corMatrix2 = corMatrix
+  corMatrix2[which(corMatrix2< 0)] = 0
+  corMatrix2[which(corMatrix2>1)] = 1
+  signedNetwork = WGCNA::TOMsimilarity(adjMat = (corMatrix2), TOMType = "signed", verbose = FALSE)
+  colnames(signedNetwork) = rownames(signedNetwork) = colnames(corMatrix2)
+  
+  # Calculate the Modular Data Based on Minimal Cluster Size
+  module_df <- data.frame(
+    taxaID = NULL, colors = NULL,
+    minSize = NULL, dataset = NULL
+  )
+  for(minSize in (minModuleSize:maxModuleSize)){
+    consTree = hclust(as.dist(1-signedNetwork), method = "complete");
+    # Module identification using dynamic tree cut:
+    unmergedLabels = dynamicTreeCut::cutreeDynamic(dendro = consTree, 
+                                                   distM = 1-signedNetwork,
+                                                   deepSplit = 2, 
+                                                   cutHeight = 0.995,
+                                                   minClusterSize = minSize,
+                                                   pamRespectsDendro = FALSE, verbose = FALSE);
+    unmergedColors = WGCNA::labels2colors(unmergedLabels)
+    module_df_temp <- data.frame(
+      taxaID = consTree$labels,
+      colors = unmergedColors,
+      minSize = minSize,
+      phenotype = phenotype
+    )
+    module_df = rbind(module_df, module_df_temp)   
+  }
+  
+  # Output Data 
+  setTxtProgressBar(pb, 4)
+  returnlist = list(
+    "oriTaxTable" = as.data.frame(as.matrix(tax_table(phyloseqObj))),
+    "filteredCountMatrix" = rawCountMatrix,
+    "sparCCTable" = corTable,
+    "moduleData" = module_df,
+    "misc" = list(
+      "phenotype" = phenotype,
+      "accInfoTable" = accInfoTable,
+      "prevTrh" = prevTrh, 
+      "nBootstrap" = nBootstrap,
+      "nMinTotalCount" = nMinTotalCount,
+      "minModuleSize" = minModuleSize,
+      "maxModuleSize" = maxModuleSize
+    )
+  )
+}
+
+#' Obtained the stacked-taxa table
+#' 
+#' @description Generate the stacked-taxa tabel for other correlation methods calculation outside C3NA. 
+#' 
+#' @param phyloseqObj (Required) Phyloseq \linkS4class{phyloseq} object. This should first undergo validatePhyloseq to ensure the diagnosis column are present.  
+#' @param phenotype (Required) The desired phenotype that present under the diagnosis column in the metadata from phyloseqObj
+#' @param prevTrh (Required) Prevalence threshold of the samples, which is a number between 0 and 1. E.g., the default 0.1 represents 10% of the samples need to have given taxa. 
+#' @param nMinTotalCount (Required) The Minimal number of reads per sample. Default: 1,000.
+#' 
+#' @return countMatrix
+#' @export
+#' @examples
+#' data(CRC_Phyloseq)
+#' curPhyloseq = validatePhloseq(phyloseqObj = CRC_Phyloseq)
+#' 
+#' # These steps are commented out due to time consuming step. The post sparcc correlation data will be 
+#' # to avoid the step
+#' phyloseq_Cancer = phyloseq::subset_samples(physeq = CRC_Phyloseq, diagnosis == "Cancer")
+#' stackedTaxaMatrix = getStackedTaxaMatrix(phyloseqObj = phyloseq_Cancer, phenotype = "Cancer")
+#' 
+#' # Correlation method
+#' testCorMatrix = cor(t(stackedTaxaMatrix))
+getStackedTaxaMatrix <- function(prevTrh = 0.1, 
+                                 phyloseqObj = phyloseqObj,
+                                 nMinTotalCount = 1000, phenotype = NA){
+  # Misc Variables
+  taxaLvls <- c("Phylum", "Class", "Order", "Family", "Genus", "Species")
+  taxaHeaders <- c("p", "c", "o", "f", "g", "s")
+  
+  # Error Checking
+  if(is.na(phenotype)){stop("Please provide a phenotype name.")} 
+  if(!class(phyloseqObj) == "phyloseq"){
+    stop(paste0("The object is not a phyloseq object, please correctly import the ",
+                "OTUs/ASVs table, taxa table and sample data as phyloseq obejcts."))}
+  
+  # Filter out low OTUs count samples, default > 1000
+  phyloseqObj = phyloseq::prune_samples(phyloseq::sample_sums(phyloseqObj)>=nMinTotalCount, phyloseqObj)
+  
+  # Extract Info from Phyloseq Object
+  tempTaxa = as.data.frame(as.matrix(tax_table(phyloseqObj)))
+  tempTaxa$OTUs = rownames(otu_table(phyloseqObj))
+  curTaxaTable <- as.data.frame(as.matrix(tax_table(phyloseqObj)))
+  for(t in seq_along(taxaLvls)){
+    curLevel = taxaLvls[t]
+    psTempOri = tax_glom(phyloseqObj, curLevel, NArm = FALSE)
+    psTemp = phyloseq_filter_prevalence(psTempOri, 
+                                        prev.trh = prevTrh, abund.trh = NULL,
+                                        threshold_condition = "AND", abund.type = "total")
+    curOTUs = as.data.frame(as.matrix(otu_table(psTemp)))
+    curOTUs$TEMP = as.character(as.data.frame(as.matrix(tax_table(psTemp)))[, curLevel])
+    curOTUs <- curOTUs %>%
+      mutate(TEMP = ifelse(is.na(TEMP), "NA", TEMP)) %>%
+      group_by(TEMP) %>%
+      summarise_if(is.numeric, sum) %>%
+      column_to_rownames("TEMP")
+    
+    # Replace NAs and Remove Useless Taxa
+    curOTUs[is.na(curOTUs)] <- 0
+    curOTUs <- curOTUs[rowSums(curOTUs)>0, ]
+    
+    if(t == 1){
+      # OTUs Table
+      rownames(curOTUs) = paste0(taxaHeaders[t], "_", rownames(curOTUs))
+      rawCountMatrix = curOTUs
+    } else{
+      rownames(curOTUs) = paste0(taxaHeaders[t], "_", rownames(curOTUs))
+      rawCountMatrix = rbind(rawCountMatrix, curOTUs)
+    }
+  }
+  
+  return(rawCountMatrix)
+}
+
 # Remove all lower triangle of a corMatrix
 .getUpperTri <- function(corMatrix){
   corMatrix[lower.tri(corMatrix)]<- NA

@@ -9,6 +9,7 @@ reference:
     contents:
     - validatePhloseq
     - initiateC3NA
+    - initiateC3NA_DiffCorr
     - getOptMods
     - comparePhenotypes
     - getInfluentialTaxa
@@ -24,3 +25,4 @@ reference:
     contents:
     - CRC_Phyloseq
     - C3NAPackageCheck
+    - getStackedTaxaMatrix

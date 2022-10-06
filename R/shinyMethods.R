@@ -2306,7 +2306,7 @@ compareTwoPhenoShiny = function(C3NAObj){
         selectedTaxaLvl = taxaLvls[match(splitName[[1]][1], taxaHeaders)]
         selectedTaxaNameFull = gsub(paste0("^", splitName[[1]][1], "_"), "", selectedTaxaName)
         curDiseaseCount = data.frame(
-          count = as.numeric(curDisease_OriCountTable[selectedTaxaName, ]),
+          count = as.numeric(curDisease_OriCountTable[selectedTaxaNam=e, ]),
           sampleID = colnames(curDisease_OriCountTable[selectedTaxaName, ]),
           condition = data1Name
         )

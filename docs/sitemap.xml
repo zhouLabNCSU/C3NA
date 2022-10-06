@@ -67,13 +67,22 @@
     <loc>/reference/getOptMods.html</loc>
   </url>
   <url>
+    <loc>/reference/getStackedTaxaMatrix.html</loc>
+  </url>
+  <url>
     <loc>/reference/index.html</loc>
   </url>
   <url>
     <loc>/reference/initiateC3NA.html</loc>
   </url>
   <url>
+    <loc>/reference/initiateC3NA_DiffCorr.html</loc>
+  </url>
+  <url>
     <loc>/reference/moduleEvals.html</loc>
+  </url>
+  <url>
+    <loc>/reference/updateInitiateC3NA.html</loc>
   </url>
   <url>
     <loc>/reference/validatePhloseq.html</loc>

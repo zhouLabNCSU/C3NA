@@ -46,7 +46,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -129,88 +129,88 @@
 <h3 id="step-2-check-if-all-dependent-packages-are-installed-properly">Step 2 Check if all dependent packages are installed properly<a class="anchor" aria-label="anchor" href="#step-2-check-if-all-dependent-packages-are-installed-properly"></a>
 </h3>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">## CRAN Repo</span>
-<span class="va">.cran_packages</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"stringr"</span>, <span class="st">"tibble"</span>, <span class="st">"dplyr"</span>, <span class="st">"readr"</span>, <span class="st">"stats"</span>, <span class="st">"visNetwork"</span>, 
-                    <span class="st">"igraph"</span>, <span class="st">"scales"</span>, <span class="st">"magrittr"</span>, <span class="st">"tidyr"</span>, <span class="st">"randomcoloR"</span>, 
-                    <span class="st">"ggpubr"</span>, <span class="st">"ggplot2"</span>,  <span class="st">"plotly"</span>, <span class="st">"colorspace"</span>, 
-                    <span class="st">"reshape2"</span>, <span class="st">"shiny"</span>, <span class="st">"shinyWidgets"</span>, <span class="st">"shinydashboard"</span>, 
-                    <span class="st">"shinyjs"</span>, <span class="st">"reactable"</span>, <span class="st">"DT"</span>, <span class="st">"pheatmap"</span>, <span class="st">"dynamicTreeCut"</span>, 
-                    <span class="st">"cluster"</span>, <span class="st">"WGCNA"</span>, <span class="st">"RColorBrewer"</span>, <span class="st">"base64enc"</span>, <span class="st">"htmlwidgets"</span>,
-                    <span class="st">"foreach"</span><span class="op">)</span>
-<span class="va">.inst</span> <span class="op">&lt;-</span> <span class="va">.cran_packages</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/installed.packages.html" class="external-link">installed.packages</a></span><span class="op">(</span><span class="op">)</span>
-<span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/any.html" class="external-link">any</a></span><span class="op">(</span><span class="op">!</span><span class="va">.inst</span><span class="op">)</span><span class="op">)</span><span class="op">{</span>
-  <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="va">.cran_packages</span><span class="op">[</span><span class="op">!</span><span class="va">.inst</span><span class="op">]</span>,repos <span class="op">=</span> <span class="st">"http://cran.rstudio.com/"</span>,
-                   dependencies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="op">}</span>
-
-<span class="co">## Bioconductor Repo</span>
-<span class="va">.bioc_packages</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"phyloseq"</span>, <span class="st">"qvalue"</span>, <span class="st">"impute"</span>, <span class="st">'GO.db'</span>, <span class="st">'preprocessCore'</span><span class="op">)</span>
-<span class="va">.inst</span> <span class="op">&lt;-</span> <span class="va">.bioc_packages</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/installed.packages.html" class="external-link">installed.packages</a></span><span class="op">(</span><span class="op">)</span>
-<span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span>
-<span class="kw">if</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/any.html" class="external-link">any</a></span><span class="op">(</span><span class="op">!</span><span class="va">.inst</span><span class="op">)</span><span class="op">)</span><span class="op">{</span>
-  <span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html" class="external-link">install</a></span><span class="op">(</span><span class="va">.bioc_packages</span><span class="op">[</span><span class="op">!</span><span class="va">.inst</span><span class="op">]</span><span class="op">)</span>
-<span class="op">}</span>
-<span class="co">## GitHub Repo</span>
-<span class="va">.git_packages</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SpiecEasi"</span>, <span class="st">"metagMisc"</span><span class="op">)</span>
-<span class="va">.git_packagesPath</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"zdk123/SpiecEasi"</span>, <span class="st">"vmikk/metagMisc"</span><span class="op">)</span>
-<span class="va">.inst</span> <span class="op">&lt;-</span> <span class="va">.git_packages</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/installed.packages.html" class="external-link">installed.packages</a></span><span class="op">(</span><span class="op">)</span>
-<span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/any.html" class="external-link">any</a></span><span class="op">(</span><span class="op">!</span><span class="va">.inst</span><span class="op">)</span><span class="op">)</span><span class="op">{</span>
-  <span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/devtools/man/remote-reexports.html" class="external-link">install_github</a></span><span class="op">(</span><span class="va">.git_packagesPath</span><span class="op">[</span><span class="op">!</span><span class="va">.inst</span><span class="op">]</span><span class="op">)</span>
-<span class="op">}</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co">## CRAN Repo</span></span>
+<span><span class="va">.cran_packages</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"stringr"</span>, <span class="st">"tibble"</span>, <span class="st">"dplyr"</span>, <span class="st">"readr"</span>, <span class="st">"stats"</span>, <span class="st">"visNetwork"</span>, </span>
+<span>                    <span class="st">"igraph"</span>, <span class="st">"scales"</span>, <span class="st">"magrittr"</span>, <span class="st">"tidyr"</span>, <span class="st">"randomcoloR"</span>, </span>
+<span>                    <span class="st">"ggpubr"</span>, <span class="st">"ggplot2"</span>,  <span class="st">"plotly"</span>, <span class="st">"colorspace"</span>, </span>
+<span>                    <span class="st">"reshape2"</span>, <span class="st">"shiny"</span>, <span class="st">"shinyWidgets"</span>, <span class="st">"shinydashboard"</span>, </span>
+<span>                    <span class="st">"shinyjs"</span>, <span class="st">"reactable"</span>, <span class="st">"DT"</span>, <span class="st">"pheatmap"</span>, <span class="st">"dynamicTreeCut"</span>, </span>
+<span>                    <span class="st">"cluster"</span>, <span class="st">"WGCNA"</span>, <span class="st">"RColorBrewer"</span>, <span class="st">"base64enc"</span>, <span class="st">"htmlwidgets"</span>,</span>
+<span>                    <span class="st">"foreach"</span><span class="op">)</span></span>
+<span><span class="va">.inst</span> <span class="op">&lt;-</span> <span class="va">.cran_packages</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/installed.packages.html" class="external-link">installed.packages</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/any.html" class="external-link">any</a></span><span class="op">(</span><span class="op">!</span><span class="va">.inst</span><span class="op">)</span><span class="op">)</span><span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="va">.cran_packages</span><span class="op">[</span><span class="op">!</span><span class="va">.inst</span><span class="op">]</span>,repos <span class="op">=</span> <span class="st">"http://cran.rstudio.com/"</span>,</span>
+<span>                   dependencies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="co">## Bioconductor Repo</span></span>
+<span><span class="va">.bioc_packages</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"phyloseq"</span>, <span class="st">"qvalue"</span>, <span class="st">"impute"</span>, <span class="st">'GO.db'</span>, <span class="st">'preprocessCore'</span><span class="op">)</span></span>
+<span><span class="va">.inst</span> <span class="op">&lt;-</span> <span class="va">.bioc_packages</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/installed.packages.html" class="external-link">installed.packages</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span></span>
+<span><span class="kw">if</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/any.html" class="external-link">any</a></span><span class="op">(</span><span class="op">!</span><span class="va">.inst</span><span class="op">)</span><span class="op">)</span><span class="op">{</span></span>
+<span>  <span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html" class="external-link">install</a></span><span class="op">(</span><span class="va">.bioc_packages</span><span class="op">[</span><span class="op">!</span><span class="va">.inst</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="co">## GitHub Repo</span></span>
+<span><span class="va">.git_packages</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SpiecEasi"</span>, <span class="st">"metagMisc"</span><span class="op">)</span></span>
+<span><span class="va">.git_packagesPath</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"zdk123/SpiecEasi"</span>, <span class="st">"vmikk/metagMisc"</span><span class="op">)</span></span>
+<span><span class="va">.inst</span> <span class="op">&lt;-</span> <span class="va">.git_packages</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/installed.packages.html" class="external-link">installed.packages</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/any.html" class="external-link">any</a></span><span class="op">(</span><span class="op">!</span><span class="va">.inst</span><span class="op">)</span><span class="op">)</span><span class="op">{</span></span>
+<span>  <span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="va">.git_packagesPath</span><span class="op">[</span><span class="op">!</span><span class="va">.inst</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
 <p>Once the required package check is complete, you will be able to use C3NA package, and please check out a full tutorials with demo under <strong>Articles</strong> tab on the top guide bar.</p>
 </div>
 <div class="section level3">
 <h3 id="step-3--install-from-github">Step 3. Install from Github<a class="anchor" aria-label="anchor" href="#step-3--install-from-github"></a>
 </h3>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># install.packages("devtools")</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://devtools.r-lib.org/" class="external-link">devtools</a></span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/devtools/man/remote-reexports.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"zhouLabNCSU/C3NA"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://devtools.r-lib.org/" class="external-link">devtools</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"zhouLabNCSU/C3NA"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="step-4--package-check">Step 4. Package Check<a class="anchor" aria-label="anchor" href="#step-4--package-check"></a>
 </h3>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/zhouLabNCSU/C3NA/" class="external-link">C3NA</a></span><span class="op">)</span>
-<span class="co">#&gt; </span>
-<span class="fu"><a href="../reference/C3NAPackageCheck.html">C3NAPackageCheck</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt;    Found      Library Version    PackageName</span>
-<span class="co">#&gt; 1   TRUE         CRAN   1.4.0        stringr</span>
-<span class="co">#&gt; 2   TRUE         CRAN   3.1.6         tibble</span>
-<span class="co">#&gt; 3   TRUE         CRAN   1.0.7          dplyr</span>
-<span class="co">#&gt; 4   TRUE         CRAN   2.1.1          readr</span>
-<span class="co">#&gt; 5   TRUE         CRAN   4.1.0          stats</span>
-<span class="co">#&gt; 6   TRUE         CRAN   2.1.0     visNetwork</span>
-<span class="co">#&gt; 7   TRUE         CRAN   1.2.8         igraph</span>
-<span class="co">#&gt; 8   TRUE         CRAN   1.1.1         scales</span>
-<span class="co">#&gt; 9   TRUE         CRAN   2.0.2       magrittr</span>
-<span class="co">#&gt; 10  TRUE         CRAN   1.1.4          tidyr</span>
-<span class="co">#&gt; 11  TRUE         CRAN 1.1.0.1    randomcoloR</span>
-<span class="co">#&gt; 12  TRUE         CRAN   0.4.0         ggpubr</span>
-<span class="co">#&gt; 13  TRUE         CRAN   3.3.5        ggplot2</span>
-<span class="co">#&gt; 14  TRUE         CRAN  4.10.0         plotly</span>
-<span class="co">#&gt; 15  TRUE         CRAN   2.0.2     colorspace</span>
-<span class="co">#&gt; 16  TRUE         CRAN   1.4.4       reshape2</span>
-<span class="co">#&gt; 17  TRUE         CRAN   1.7.1          shiny</span>
-<span class="co">#&gt; 18  TRUE         CRAN   0.6.3   shinyWidgets</span>
-<span class="co">#&gt; 19  TRUE         CRAN   0.7.2 shinydashboard</span>
-<span class="co">#&gt; 20  TRUE         CRAN   2.1.0        shinyjs</span>
-<span class="co">#&gt; 21  TRUE         CRAN   0.2.3      reactable</span>
-<span class="co">#&gt; 22  TRUE         CRAN    0.20             DT</span>
-<span class="co">#&gt; 23  TRUE         CRAN  1.0.12       pheatmap</span>
-<span class="co">#&gt; 24  TRUE         CRAN  1.63.1 dynamicTreeCut</span>
-<span class="co">#&gt; 25  TRUE         CRAN   2.1.2        cluster</span>
-<span class="co">#&gt; 26  TRUE         CRAN  1.70.3          WGCNA</span>
-<span class="co">#&gt; 27  TRUE         CRAN   1.1.2   RColorBrewer</span>
-<span class="co">#&gt; 28  TRUE         CRAN   0.1.3      base64enc</span>
-<span class="co">#&gt; 29  TRUE         CRAN   1.5.4    htmlwidgets</span>
-<span class="co">#&gt; 30  TRUE         CRAN   1.5.2        foreach</span>
-<span class="co">#&gt; 31  TRUE Bioconductor  1.36.0       phyloseq</span>
-<span class="co">#&gt; 32  TRUE Bioconductor  2.24.0         qvalue</span>
-<span class="co">#&gt; 33  TRUE Bioconductor  1.66.0         impute</span>
-<span class="co">#&gt; 34  TRUE       GitHub   1.1.2      SpiecEasi</span>
-<span class="co">#&gt; 35  TRUE       GitHub   0.0.4      metagMisc</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/zhouLabNCSU/C3NA/" class="external-link">C3NA</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="fu"><a href="../reference/C3NAPackageCheck.html">C3NAPackageCheck</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt;    Found      Library Version    PackageName</span></span>
+<span><span class="co">#&gt; 1   TRUE         CRAN   1.4.0        stringr</span></span>
+<span><span class="co">#&gt; 2   TRUE         CRAN   3.1.8         tibble</span></span>
+<span><span class="co">#&gt; 3   TRUE         CRAN   1.0.9          dplyr</span></span>
+<span><span class="co">#&gt; 4   TRUE         CRAN   2.1.2          readr</span></span>
+<span><span class="co">#&gt; 5   TRUE         CRAN   4.1.0          stats</span></span>
+<span><span class="co">#&gt; 6   TRUE         CRAN   2.1.0     visNetwork</span></span>
+<span><span class="co">#&gt; 7   TRUE         CRAN   1.3.4         igraph</span></span>
+<span><span class="co">#&gt; 8   TRUE         CRAN   1.2.1         scales</span></span>
+<span><span class="co">#&gt; 9   TRUE         CRAN   2.0.3       magrittr</span></span>
+<span><span class="co">#&gt; 10  TRUE         CRAN   1.2.0          tidyr</span></span>
+<span><span class="co">#&gt; 11  TRUE         CRAN 1.1.0.1    randomcoloR</span></span>
+<span><span class="co">#&gt; 12  TRUE         CRAN   0.4.0         ggpubr</span></span>
+<span><span class="co">#&gt; 13  TRUE         CRAN   3.3.6        ggplot2</span></span>
+<span><span class="co">#&gt; 14  TRUE         CRAN  4.10.0         plotly</span></span>
+<span><span class="co">#&gt; 15  TRUE         CRAN   2.0.3     colorspace</span></span>
+<span><span class="co">#&gt; 16  TRUE         CRAN   1.4.4       reshape2</span></span>
+<span><span class="co">#&gt; 17  TRUE         CRAN   1.7.2          shiny</span></span>
+<span><span class="co">#&gt; 18  TRUE         CRAN   0.7.3   shinyWidgets</span></span>
+<span><span class="co">#&gt; 19  TRUE         CRAN   0.7.2 shinydashboard</span></span>
+<span><span class="co">#&gt; 20  TRUE         CRAN   2.1.0        shinyjs</span></span>
+<span><span class="co">#&gt; 21  TRUE         CRAN   0.3.0      reactable</span></span>
+<span><span class="co">#&gt; 22  TRUE         CRAN    0.25             DT</span></span>
+<span><span class="co">#&gt; 23  TRUE         CRAN  1.0.12       pheatmap</span></span>
+<span><span class="co">#&gt; 24  TRUE         CRAN  1.63.1 dynamicTreeCut</span></span>
+<span><span class="co">#&gt; 25  TRUE         CRAN   2.1.2        cluster</span></span>
+<span><span class="co">#&gt; 26  TRUE         CRAN    1.71          WGCNA</span></span>
+<span><span class="co">#&gt; 27  TRUE         CRAN   1.1.3   RColorBrewer</span></span>
+<span><span class="co">#&gt; 28  TRUE         CRAN   0.1.3      base64enc</span></span>
+<span><span class="co">#&gt; 29  TRUE         CRAN   1.5.4    htmlwidgets</span></span>
+<span><span class="co">#&gt; 30  TRUE         CRAN   1.5.2        foreach</span></span>
+<span><span class="co">#&gt; 31  TRUE Bioconductor  1.36.0       phyloseq</span></span>
+<span><span class="co">#&gt; 32  TRUE Bioconductor  2.24.0         qvalue</span></span>
+<span><span class="co">#&gt; 33  TRUE Bioconductor  1.66.0         impute</span></span>
+<span><span class="co">#&gt; 34  TRUE       GitHub   1.1.2      SpiecEasi</span></span>
+<span><span class="co">#&gt; 35  TRUE       GitHub   0.0.4      metagMisc</span></span></code></pre></div>
 <p>Because of the interactive R Shiny environment, C3NA required a large number of packages to be installed. Please run the following function to check if all packages are successfully installed. The function will output a table, and please make sure the column under “Found” are all <strong>TRUE</strong></p>
 </div>
   </div>
@@ -230,7 +230,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer>

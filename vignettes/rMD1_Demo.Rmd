@@ -29,6 +29,14 @@ For both Shiny applications, each sub-section has a question mark in the title w
 knitr::include_graphics("../man/figures/ClickDemo.gif")
 ```
 
+## Step 0. Required libraries
+```{r}
+## Please load the following libraries
+library(phyloseq)
+library(metagMisc)
+library(tidyverse)
+```
+
 ## Step 1. Load demo data
 The demo file includes part of the 16S rRNA processed data from Baxter et al., with 127 Cancer and 134 Control subjects.
 ```{r}
