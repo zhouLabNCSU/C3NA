@@ -231,14 +231,16 @@ initiateC3NA <- function(phyloseqObj = phyloseqObj,
 #' data(CRC_Phyloseq)
 #' curPhyloseq = validatePhloseq(phyloseqObj = CRC_Phyloseq)
 #' 
-#' # These steps are commented out due to time consuming step. The post sparcc correlation data will be 
-#' # to avoid the step
-#' phyloseq_Cancer = phyloseq::subset_samples(physeq = CRC_Phyloseq, diagnosis == "Cancer")
-#' stackedTaxaMatrix = getStackedTaxaMatrix(phyloseqObj = phyloseq_Cancer, phenotype = "Cancer")
+#' # Obtain the cancer data
+#' # phyloseq_Cancer = phyloseq::subset_samples(physeq = CRC_Phyloseq, diagnosis == "Cancer")
+#' # Calculate the Stacked-taxa Matrix
+#' # stackedTaxaMatrix = getStackedTaxaMatrix(phyloseqObj = phyloseq_Cancer, phenotype = "Cancer")
 #' 
-#' # Correlation method
-#' testCorMatrix = cor(t(stackedTaxaMatrix))
-#' # C3NAObj_Normal = initiateC3NA_DiffCorr(corMatrix = testCorMatrix,
+#' # Correlation method- Example
+#' # testCorMatrix = cor(t(stackedTaxaMatrix))
+#' 
+#' # Method to generate initiate C3NA Object with the correlation matrix
+#' # C3NAObj_Cancer = initiateC3NA_DiffCorr(corMatrix = testCorMatrix,
 #' #                                        phyloseqObj = phyloseq_Cancer, 
 #' #                                        nMinTotalCount = 1000, phenotype = "Cancer" 
 #' #                                        )
