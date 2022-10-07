@@ -32,9 +32,9 @@ curPhyloseq = validatePhloseq(phyloseqObj = CRC_Phyloseq)
 
 # These steps are commented out due to time consuming step. The post sparcc correlation data will be 
 # to avoid the step
-phyloseq_Cancer = phyloseq::subset_samples(physeq = CRC_Phyloseq, diagnosis == "Cancer")
-stackedTaxaMatrix = getStackedTaxaMatrix(phyloseqObj = phyloseq_Cancer, phenotype = "Cancer")
+# phyloseq_Cancer = phyloseq::subset_samples(physeq = CRC_Phyloseq, diagnosis == "Cancer")
+# stackedTaxaMatrix = getStackedTaxaMatrix(phyloseqObj = phyloseq_Cancer, phenotype = "Cancer")
 
 # Correlation method
-testCorMatrix = cor(t(stackedTaxaMatrix))
+# testCorMatrix = cor(t(stackedTaxaMatrix))
 }

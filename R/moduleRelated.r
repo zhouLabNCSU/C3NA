@@ -393,11 +393,11 @@ initiateC3NA_DiffCorr <- function(corMatrix = corMatrix,
 #' 
 #' # These steps are commented out due to time consuming step. The post sparcc correlation data will be 
 #' # to avoid the step
-#' phyloseq_Cancer = phyloseq::subset_samples(physeq = CRC_Phyloseq, diagnosis == "Cancer")
-#' stackedTaxaMatrix = getStackedTaxaMatrix(phyloseqObj = phyloseq_Cancer, phenotype = "Cancer")
+#' # phyloseq_Cancer = phyloseq::subset_samples(physeq = CRC_Phyloseq, diagnosis == "Cancer")
+#' # stackedTaxaMatrix = getStackedTaxaMatrix(phyloseqObj = phyloseq_Cancer, phenotype = "Cancer")
 #' 
 #' # Correlation method
-#' testCorMatrix = cor(t(stackedTaxaMatrix))
+#' # testCorMatrix = cor(t(stackedTaxaMatrix))
 getStackedTaxaMatrix <- function(prevTrh = 0.1, 
                                  phyloseqObj = phyloseqObj,
                                  nMinTotalCount = 1000, phenotype = NA){
